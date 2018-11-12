@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>BLOG API</title>
+        <link rel="stylesheet" href="styles/css/style.css">
+        <script src="styles/js/functions.js"></script>
+    </head>
+    <body>
+        <div class="contenedor">
+            <form action="" id="form-registrarse"  method="POST" class="form">
+                <div class="form-title">BLOG API - Registrase</div>
+                <label for="name" class="label-control">Nombre</label>
+                <input type="text" placeholder="Nombre" name="name" id="name" class="form-control" required>                
+                <label for="email" class="label-control">Email</label>
+                <input type="email" placeholder="Email" name="email" id="email" class="form-control" required>
+                <label for="password" class="label-control">Contraseña</label>
+                <input type="password" placeholder="Contraseña" name="password" id="password" class="form-control" required>
+                <label for="re-password" class="label-control">Confirmar contraseña</label>
+                <input type="password" placeholder="Contraseña" name="re-password" id="re-password" class="form-control" required>
+                <div class="action-control">
+                    <a href="login.html" class="link-login"><- Login</a>
+                    <button type="submit" class="btn">Registrase</button>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
