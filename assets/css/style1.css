@@ -1,0 +1,84 @@
+.texture1{
+    background:
+    radial-gradient(black 15%, transparent 16%) 0 0,
+    radial-gradient(black 15%, transparent 16%) 8px 8px,
+    radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+    radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+    background-color:#282828;
+    background-size:16px 16px;
+}
+.container-fluid{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100%;
+}
+.card{
+    box-shadow: 0 0 10px 5px rgba(205,150,105,0.3);
+}
+.icon-api{
+    background-color: rgba(0,0,255,0.6);
+    padding: 15px 0px;
+    width: 65px;
+    height: 65px;
+    text-align: center;
+    border-radius: 50%;
+    border:5px solid rgba(255,255,255,0.5);
+    box-shadow: 0 0 10px 3px white;
+    text-shadow: 2px 2px 3px white;
+}
+#tabs-login .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #2A77E0;
+    background-color: #FFFFFF;
+    border-color: transparent transparent #2A77E0;
+    border-bottom: 4px solid !important;
+    font-size: 20px;
+    font-weight: bold;
+}
+#tabs-login .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link{
+     font-weight: bold;
+}
+#tabs-login .nav-tabs .nav-link {
+    border: 1px solid transparent;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    color: #eee;
+    font-weight: bold;
+    font-size: 20px;
+}
+/* Css para los campos requeridos */
+#tabs-login input{
+   border-left: 2px solid rgb(128, 128, 128,0.3); 
+}
+#tabs-login input:required{
+    border-left: 2px solid rgba(255,0,0,0.5);
+}
+#tabs-login input:required:valid{
+    border-left: 2px solid #4BB543; 
+}
+#tabs-login input:required:invalid{
+    border-left: 2px solid rgba(255,0,0,0.5); 
+}
+
+.content-center{
+    margin:0 auto;  
+}
+
+/* Arreglando el tamaño */
+@media(min-width: 1600px){
+    .content-center{
+        width: 70% !important;
+    }
+}
+
+@media(min-height: 640px){
+    .content-center{
+        margin-top: 5em;
+    }
+}
+
+@media(max-height: 639px){
+    .content-center{
+        margin-top: 0.5em;
+    }
+}
