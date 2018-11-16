@@ -1,28 +1,95 @@
 <!DOCTYPE html>
-<html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>BLOG API</title>
-        <link rel="stylesheet" href="assets/css/style.css"> 
-        <script src="assets/js/jquery.js"></script>       
-        <script src="app/login.js"></script>     
-        <script src="assets/js/functions.js"></script>
-    </head>
-    <body>
-        <div class="contenedor">
-            <form action="" id="form-login" method="POST" class="form">
-                <div class="form-title">BLOG API - LOGIN</div>
-                <label for="username" class="label-control">Usuario</label>
-                <input type="text" placeholder="Usuario" name="username" id="username" class="form-control" required>
-                <label for="password" class="label-control">Contraseña</label>
-                <input type="password" placeholder="Contraseña" name="password" id="password" class="form-control" required>
-                <div class="action-control">
-                    <a href="registrarse.html" class="link-registrarse">+ Registrarse</a>
-                    <button type="submit" class="btn">Login</button>
-                </div>
-            </form>
-        </div>
-    </body>
+<html lang="es">  
+	<head>    
+		<title>BLOG API</title>    
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="title" content="BLOG API">
+		<meta name="description" content="Blog para hacer publicaciones sobre temas, comentar y calificar los temas de interés">  
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">  
+		<link href="assets/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+		<link href="assets/css/style1.css" rel="stylesheet" type="text/css"/>
+		<script type="text/javascript" src="assets/js/jquery.js"></script>    
+		<script type="text/javascript" src="assets/js/bootstrap.js"></script>    
+	</head>  
+	<body> 
+		<div class="container-fluid texture1">
+			<div class="row-fluid" style="background-color: rgba(128,128,128,0.8);">
+				<div class="col-12">
+					<p class="h4 text-white text-left" style="font-family: tahoma; font-weight: bold;"><i class="fas fa-lg icon-api text-danger fa-chalkboard-teacher"></i> BLOG API</p>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="col-md-6 col-lg-4 col-sm-8 col-xs-12 offset-md-3 offset-lg-4 offset-sm-2">
+
+					<div class="card w-100 content-center" style="width: 100%;">
+						<div class="card-title">
+							<nav>
+								<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+									<a class="nav-item nav-link active" id="pills-login-tab" data-toggle="tab" href="#pills-login" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fas fa-sign-in-alt"></i> Login</a>
+									<a class="nav-item nav-link" id="pills-login-tab" data-toggle="tab" href="#pills-registrarse" role="tab" aria-controls="nav-profile" aria-selected="false"><i class="fas fa-user-plus"></i> Registrarse</a>
+								</div>
+							</nav>
+						</div>
+						<div class="card-body py-0" id="tabs-login">
+							<div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+								<div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
+									<form id="form-login">
+										<div class="form-group">
+											<label for="username">Usuario</label>
+											<input type="text" class="form-control form-control-sm" id="username" aria-describedby="usernameHelp" placeholder="Escriba el usuario" required>
+										</div>
+										<div class="form-group text-truncate">
+											<label for="password" class="w-100">Contraseña <a href="#" class="float-right">¿Olvidaste tu contraseña?</a></label>
+											<input type="password" class="form-control form-control-sm" id="password" placeholder="Contraseña" required>
+										</div>
+										<div class="form-group form-check">
+											<input type="checkbox" class="form-check-input" id="rememberme">
+											<label class="form-check-label" for="rememberme">Recordarme ?</label>
+										</div>
+										<button type="submit" class="btn btn-sm btn-block btn-primary">Entrar</button>
+									</form>
+								</div>
+								<div class="tab-pane fade" id="pills-registrarse" role="tabpanel" aria-labelledby="pills-registrarse-tab">
+									<form id="form-registrase">
+										<div class="form-group">
+											<label for="name">Nombre</label>
+											<input type="text" class="form-control form-control-sm" id="name" aria-describedby="NameHelp" placeholder="Escriba su Nombre" required>
+										</div>
+										<div class="form-group">
+											<label for="email">Email</label>
+											<input type="email" class="form-control form-control-sm" id="email" aria-describedby="EmailHelp" placeholder="Escriba su email" required>
+										</div>
+										<div class="form-group">
+											<label for="rpassword">Contraseña</label>
+											<input type="password" class="form-control form-control-sm" id="rpassword" placeholder="Contraseña" required>
+										</div>
+										<div class="form-group">
+											<label for="re-password">Confirmar Contraseña</label>
+											<input type="password" class="form-control form-control-sm" id="re-password" placeholder="Confirmar Contraseña" required>
+										</div>
+										<button type="submit" class="btn btn-block btn-sm btn-primary" title="Crear Cuenta">Crear Cuenta</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+
+				</div>    
+			</div>
+			<div class="row-fluid m-0 p-0">
+				<div class="col-12  m-0 p-0">
+					<!-- Footer -->
+					<footer class="page-footer text-white fixed-bottom" style="background-color: rgba(128,128,128,0.8); font-size: 18px;">
+					    <!-- Copyright -->
+					    <div class="footer-copyright text-center py-3">© 2018 Copyright: yansellrivasdiaz@gmail.com</div>
+					    <!-- Copyright -->
+					</footer>
+				  	<!-- Footer -->
+				</div>
+			</div>
+		</div>   
+	</body>  
 </html>
