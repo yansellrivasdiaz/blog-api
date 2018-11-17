@@ -11,7 +11,7 @@ function login(){
     if(username != '' && password != ''){
         alert(username + '-' + password);
     }else{
-        alert('Campos obligatorios');
+        alertshow("Campos obligatorios","danger");
         $('#username').focus();
     }
 }

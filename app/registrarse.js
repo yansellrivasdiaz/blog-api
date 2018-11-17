@@ -18,17 +18,40 @@ $(document).ready(function(){
 function registrarse(){
     var name = $('#name').val();
     var email = $('#email').val();
-    var password = $('#password').val();
+    var password = $('#rpassword').val();
     var repassword = $('#re-password').val();
     if(name != '' && email != '' && password != '' && repassword != ''){
         if(password === repassword){
-    
+            var url = 'http://68.183.27.173:8080/register';
+            var data = {
+                "name":name,
+                "email":email,
+                "password":password
+            };
+            
+            fetch(url, {
+              method: 'POST', // or 'PUT'
+              body: JSON.stringify(data), // data can be `string` or {object}!
+              headers:{
+                'Content-Type': 'application/json'
+              }
+            }).then(res => res.json())
+            .then(response => {
+                if(response.error){
+                    alertshow(response.message,'danger');
+                    $("#email").focus();
+                }else{
+                    $("#form-registrarse")[0].reset();
+                    alertshow("usuario: "+response.email+" <small>Creado</smal>",'success');
+                }
+            })
+            .catch(error => alertshow('Error','danger'));
         }else{
-            alert('Contraseñas no coiciden!');
+            alertshow("Contraseñas no coiciden!",'warning');
             $('#re-password').focus(); 
         }
     }else{
-        alert('Campos obligatorios');
+        alertshow("Campos obligatorios",'danger');
         $('#username').focus();
     }
 }
