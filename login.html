@@ -15,17 +15,17 @@
         <script src="app/login.js"></script>        
         <script src="app/registrarse.js"></script>   
 	</head>  
-	<body> 
+	<body onload="$('#menu').load('menu_index.html'); $('#page-footer').load('footer.html');"> 
 		<div class="container-fluid texture1" id="content">
-			<div class="row-fluid" style="background-color: rgba(128,128,128,0.8);">
-				<div class="col-12">
-					<p class="h4 text-white text-left" style="font-family: tahoma; font-weight: bold;"><i class="fas fa-lg icon-api text-danger fa-chalkboard-teacher"></i> BLOG</p>
+			<div class="row" style="background-color: rgba(128,128,128,0.8);">
+				<div class="col-12" id="menu">
+					<!-- Aqui se carga el menu  -->
 				</div>
 			</div>
-			<div class="row-fluid">
-				<div class="col-md-6 col-lg-4 col-sm-8 col-xs-12 offset-md-3 offset-lg-4 offset-sm-2">
+			<div class="row">
+				<div class="col-md-6 col-lg-4 col-sm-8 col-xs-12 offset-md-3 offset-lg-4 offset-sm-2 pt-4">
 
-					<div class="card w-100 content-center" style="width: 100%;">
+					<div class="card w-100 content-center mt-5" style="width: 100%;">
 						<div class="card-title">
 							<nav>
 								<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
@@ -79,15 +79,9 @@
 					</div>
 				</div>    
 			</div>
-			<div class="row-fluid m-0 p-0">
-				<div class="col-12  m-0 p-0">
-					<!-- Footer -->
-					<footer class="page-footer text-white fixed-bottom" style="background-color: rgba(128,128,128,0.8); font-size: 18px;">
-					    <!-- Copyright -->
-					    <div class="footer-copyright text-center py-3">© 2018 Copyright: yansellrivasdiaz@gmail.com</div>
-					    <!-- Copyright -->
-					</footer>
-				  	<!-- Footer -->
+			<div class="row">
+				<div class="col-12" id="page-footer">
+					<!-- Aqui se carga el Footer -->
 				</div>
 			</div>
 		</div> 
