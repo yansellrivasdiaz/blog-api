@@ -22,7 +22,12 @@ function login(){
             headers:{
             'Content-Type': 'application/json'
             }
-        }).then(res => res.json())
+        }).then((res) => {
+            if(res.ok){
+                res.json()
+            }
+            throw new Error('La respuesta no es ok...');
+        })
         .then(response => {
             if(response.estatus && response.estatus == "error"){
                 alertshow("Credenciales incorrectas.",'danger');
@@ -36,10 +41,13 @@ function login(){
                 };
                 localStorageSaver(JSON.stringify(UserData));
                 $("#form-login")[0].reset();
-                alert("Session iniciada ",response.token);
+                session("Iniciando session como: "+UserData.name);
+                setTimeout(function(){
+                    window.location.href = "home.html";
+                },2000);
             }
         })
-        .catch(error => alertshow('Error: '+error,'danger'));
+        .catch(error => alertshow('Error: '+error.message,'danger'));
     }else{
         alertshow("Campos obligatorios","danger");
         $('#username').focus();

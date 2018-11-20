@@ -35,7 +35,12 @@ function registrarse(){
               headers:{
                 'Content-Type': 'application/json'
               }
-            }).then(res => res.json())
+            }).then((res) => {
+                if(res.ok){
+                    res.json()
+                }
+                throw new Error('La respuesta no es ok...');
+            })
             .then(response => {
                 if(response.error){
                     alertshow(response.message,'danger');
@@ -45,7 +50,7 @@ function registrarse(){
                     alertshow("usuario: "+response.email+" <small>Creado</smal>",'success');
                 }
             })
-            .catch(error => alertshow('Error','danger'));
+            .catch(error => alertshow('Error: '+error.message,'danger'));
         }else{
             alertshow("Contraseñas no coiciden!",'warning');
             $('#re-password').focus(); 

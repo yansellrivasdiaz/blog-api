@@ -22,3 +22,30 @@ function alertshow(message,type){
       $("#content #alert-message").show('slow').delay(5000).hide('slow');
   }
 }
+
+function session(message){
+    var alert_icon = `<i class="fas fa-spinner fa-spin fa-lg mr-2"></i>`;
+    var alert = `<div id="alert-message" style="display:none; position: absolute; bottom:47px; right:0; z-index:2000; width:29em;" class="alert alert-success alert-dismissible fade show" role="alert">
+    ${alert_icon} ${message}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+    </div>`;
+  if($("#content #alert-message").length > 0){
+    $("#alert-message").remove();
+    $("#content").append(alert);
+    $("#content #alert-message").show('slow').delay(5000).hide('slow');
+  }else{
+      $("#content").append(alert);
+      $("#content #alert-message").show('slow').delay(5000).hide('slow');
+  }
+}
+
+function verificarlogin(){
+    if(localStorage.getItem("blogapi")){
+        var userdata = JSON.parse(localStorage.getItem("blogapi"));
+        $("body #usernamedisplay").html(userdata.name);
+    }else{
+        window.location.href = "login.html";
+    }
+}

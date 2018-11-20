@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">  
+	<head>    
+		<title>BLOG API</title>    
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="title" content="BLOG API">
+		<meta name="description" content="Blog para hacer publicaciones sobre temas, comentar y calificar los temas de interés">  
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">  
+		<link href="assets/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+		<link href="assets/css/style1.css" rel="stylesheet" type="text/css"/>
+		<script type="text/javascript" src="assets/js/jquery.js"></script>    
+		<script type="text/javascript" src="assets/js/bootstrap.js"></script>    
+        <script src="app/home.js"></script>     
+        <script src="assets/js/functions.js"></script>   
+	</head>  
+	<body onload="$('#menu').load('menu_home.html'); $('#page-footer').load('footer.html');"> 
+		<div class="container-fluid" id="content">
+			<div class="row">
+				<div class="col-12" id="menu">
+                    <!-- Aqui se carga el menu -->
+				</div>
+			</div>
+			<div class="row pt-3    ">
+				<div class="col-md-8 col-lg-8 col-sm-8 col-xs-12 offset-md-2 offset-lg-2 offset-sm-2">
+                    <div class="container mt-5">
+
+
+                            <div class="card mb-3" style="width: 100%;">
+                                <!-- <div class="card-header">Header</div> -->
+                                <div class="card-body">
+                                    <h5 class="card-title">Title del post</h5>
+                                    <hr class="">
+                                    <p class="card-text text-truncate">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <blockquote class="blockquote-title">                                        
+                                        <a class="btn btn-link text-info float-right" href="javascript:void(0);"><i class="far fa-star fa-lg"></i> 
+                                            <br><small><span class="badge badge-xs badge-pill badge-info">25</span> Like</small>
+                                        </a>  
+                                        <a class="btn btn-link text-info float-right" href="javascript:void(0);"><i class="far fa-eye"></i> Ver más...</a>  
+                                        <a class="btn btn-link text-info float-right" href="javascript:void(0);"><span class="badge badge-pill badge-info">25</span> comentarios</a> 
+                                        <b class="text-success blockquote-footer mb-2"><i class="fa fa-user"></i> By: Yansell Rivas</b> 
+                                    </blockquote>  
+                                </div>
+                            </div>
+
+
+                    </div>
+				</div>    
+			</div>
+			<div class="row">
+				<div class="col-12" id="page-footer">
+					<!-- Aqui se carga el Footer -->
+				</div>
+			</div>
+		</div> 
+
+	</body>  
+</html>
