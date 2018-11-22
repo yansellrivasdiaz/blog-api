@@ -20,14 +20,9 @@ function login(){
             method: 'POST', // or 'PUT'
             body: JSON.stringify(data), // data can be `string` or {object}!
             headers:{
-            'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             }
-        }).then((res) => {
-            if(res.ok){
-                res.json()
-            }
-            throw new Error('La respuesta no es ok...');
-        })
+        }).then(res =>res.json())
         .then(response => {
             if(response.estatus && response.estatus == "error"){
                 alertshow("Credenciales incorrectas.",'danger');

@@ -39,17 +39,6 @@ $(document).ready(function(){
                     }).catch(function(error){
                         alertshow("Hubo problema con la peticion fetch"+error.message,"danger");
                     });
-                    // fetch(url, {
-                    //     method: 'DELETE', // or 'PUT'
-                    //     headers:{
-                    //         'Content-Type': 'application/json',
-                    //         'Authorization':`Token ${userdata.token}`
-                    //     }
-                    // }).then(res => res.json())
-                    // .then(response => {
-                    //     console.log(response);
-                    // })
-                    // .catch(error => alertshow('Error: '+error,'danger'));
                 }else{
                     localStorage.removeItem("blogapi");
                     window.location.href = 'login.html';

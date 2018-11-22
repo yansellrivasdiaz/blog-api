@@ -79,6 +79,11 @@ body{
         margin-top: 0.5em;
     } 
 }
+@media(max-width: 801px){
+    .seemore,.seecomment{
+        margin-top: 15px !important;
+    }
+}
 
 /* POSTS */
 .posts{
@@ -89,9 +94,6 @@ body{
     top:5px;
     right:15px;
 }
-.posts .post-body{
-    max-height: 30px;
-}
 .posts .like #count-like{
    font-size: 12px;
 }
@@ -100,7 +102,7 @@ body{
     font-size: 73%;
 }
 .text-line-3{
-    height: 4.5em;
+    max-height: 4.5em;
     overflow: hidden;
     text-overflow: ellipsis;
     position: relative;
@@ -111,8 +113,30 @@ body{
     position: absolute;
     bottom: 0;
     right: 0;
-    width: 70%;
+    width: 10%;
     height: 1.2em;
     background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
+}
+.posts .post-comment{
+    display: none;
+}
+.posts .post-comment .comment-content{
+    background-color: rgba(0,0,0,.03);
+    border: 1.5px solid rgba(0,0,0,.2);
+    margin-top:5px;
+    border-radius: 5px;
+    padding: 0.25rem 0.50rem;
+    text-align: justify;
+    max-height: 350px;
+    overflow-y: scroll;
+}
+.posts .post-comment .comment-content .comments{
+    margin-bottom:0.25rem !important; 
+    *box-shadow: none;
+    border:2px dashed rgba(0,0,0,0.3);
+}
+.posts .post-comment .comment-content .comments:hover{
+    border:2px solid rgba(0,0,0,0.3);
+    background-color: rgba(0,0,0,.01);
 }
   

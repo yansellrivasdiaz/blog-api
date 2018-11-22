@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">  
+	<head>    
+		<title>BLOG API</title>    
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="title" content="BLOG API">
+		<meta name="description" content="Blog para hacer publicaciones sobre temas, comentar y calificar los temas de interés">  
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">  
+		<link href="assets/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+		<link href="assets/css/style1.css" rel="stylesheet" type="text/css"/>
+		<script type="text/javascript" src="assets/js/jquery.js"></script>    
+		<script type="text/javascript" src="assets/js/bootstrap.js"></script>    
+		<script src="app/home.js"></script> 
+		<script src="app/post.js"></script>     
+        <script src="assets/js/functions.js"></script>   
+	</head>  
+	<body onload="$('#menu').load('menu_home.html'); $('#page-footer').load('footer.html');"> 
+		<div class="container-fluid" id="content">
+			<div class="row">
+				<div class="col-12" id="menu">
+                    <!-- Aqui se carga el menu -->
+				</div>
+			</div>
+			<div class="row pt-3">
+				<div class="col-md-10 col-lg-10 col-sm-10 col-xs-12 offset-md-1 offset-lg-1 offset-sm-1 mb-5 pb-2">
+                    <div class="mt-5" id="comment-container">
+
+
+                            <!-- Aqui van cargados los comentarios -->
+
+
+                    </div>
+				</div>    
+			</div>
+			<div class="row">
+				<div class="col-12" id="page-footer">
+					<!-- Aqui se carga el Footer -->
+				</div>
+			</div>
+		</div> 
+
+	</body>  
+</html>
