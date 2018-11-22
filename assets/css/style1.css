@@ -139,4 +139,24 @@ body{
     border:2px solid rgba(0,0,0,0.3);
     background-color: rgba(0,0,0,.01);
 }
-  
+#user-profile .modal-body{
+    position: relative;
+}
+#user-profile .close{
+    top:-15px;
+    right: -15px;
+    border:1px solid rgba(0,0,0,.4);
+    z-index: 3;
+    opacity: 1;
+    background-color: rgba(255, 0, 0,0.8);
+    width: 35px;
+    height: 35px;
+    padding-bottom: 5px !important;
+    text-align: center;
+    border-radius: 50%;
+    color:white;
+    position: absolute;
+}
+#user-profile .close:hover{
+    background-color: rgba(255, 0, 0,1);
+}
