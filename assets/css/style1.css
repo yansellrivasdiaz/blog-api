@@ -80,11 +80,10 @@ body{
     } 
 }
 @media(max-width: 801px){
-    .seemore,.seecomment{
+    .readmore,.views{
         margin-top: 15px !important;
     }
 }
-
 /* POSTS */
 .posts{
     position: relative;

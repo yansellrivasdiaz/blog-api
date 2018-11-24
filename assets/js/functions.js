@@ -3,7 +3,47 @@ $(document).ready(function(){
         $("#form-registrarse")[0].reset();
         $("#form-login")[0].reset();
     });
+    $("body").on("click",".showprofile",function(e){
+        e.preventDefault();
+        var userid = $(this).data("ownerid");
+        getuserprofile(userid);
+    })
 });
+function getuserprofile(userid){
+    if(localStorage.getItem("blogapi")){
+        var userdata = JSON.parse(localStorage.getItem("blogapi"));
+        var url = 'http://68.183.27.173:8080/users/'+userid;
+        if(userdata.id > 0 && userdata.token.length == 36){
+            var cabecera = new Headers();
+            cabecera.append("Authorization",'Bearer '+ userdata.token);                    
+            cabecera.append('Content-Type', 'application/json');
+            var init = {
+                method:'GET',
+                headers:cabecera
+            };
+            var myrequest = new Request(url,init);
+            fetch(myrequest).then(function(response){
+                if(response.ok){
+                    return response.json();
+                }
+                throw new Error('La respuesta no es ok...');
+            }).then(function(data){       
+                if(data.id > 0){
+                    $("#user-profile .txt-name").html(data.name);
+                    $("#user-profile .txt-email").html(data.email);
+                    $("#user-profile .txt-post").html(data.posts);
+                    $("#user-profile .txt-createDate").html((new Date(data.createdAt).toLocaleDateString()));
+                    $("#user-profile").modal({show:true,backdrop:'static'});
+                }         
+            }).catch(function(error){
+                alertshow("Hubo problema con la peticion fetch"+error.message,"danger");
+            });
+        }else{
+            localStorage.removeItem("blogapi");
+            window.location.href = 'login.html';
+        }
+    }
+}
 function alertshow(message,type){
     var alert_icon = `<i class="fas text-${type} fa-exclamation-triangle"></i>`;
     var alert = `<div id="alert-message" style="display:none; position: absolute; bottom:47px; right:0; z-index:2000; width:29em;" class="alert alert-${type} alert-dismissible fade show" role="alert">
@@ -42,6 +82,7 @@ function verificarlogin(){
     if(localStorage.getItem("blogapi")){
         var userdata = JSON.parse(localStorage.getItem("blogapi"));
         $("body #usernamedisplay").html(userdata.name);
+        $("body .showprofile").attr("data-ownerid",userdata.id);
     }else{
         window.location.href = "login.html";
     }

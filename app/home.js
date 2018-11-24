@@ -37,7 +37,9 @@ $(document).ready(function(){
                             },1000);
                         }
                     }).catch(function(error){
-                        alertshow("Hubo problema con la peticion fetch"+error.message,"danger");
+                        alertshow("Hubo problema con la peticion fetch "+error.message,"danger");
+                        localStorage.removeItem("blogapi");
+                        window.location.reload();
                     });
                 }else{
                     localStorage.removeItem("blogapi");
