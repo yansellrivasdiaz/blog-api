@@ -42,9 +42,9 @@ $(document).ready(function(){
     $("body").on("click",".post-title-a",function(e){
         e.preventDefault();
         if($(this).hasClass("open")){
-            $(".readless").click();
+            $(this).parent().siblings().find(".readless").click();
         }else{
-            $(".readmore").click();
+            $(this).parent().siblings().find(".readmore").click();
         }
     })
     /* Se ejecuta cuando se guarda un comentario */
@@ -109,7 +109,85 @@ $(document).ready(function(){
             $("body #posts-menu").removeClass("open");
         }
     })
+    /* Aqui se ejecuta la busqueda de post */
+    $("body").on("click",".btn-search",function(e){
+        e.preventDefault();
+        var search = $.trim($(".txt-search").val());
+        filtrarpost(search);
+    })
+    /* Aqui se ejecuta la busqueda de mis post */
+    $("body").on("click",".my_post",function(e){
+        e.preventDefault();
+        $("#posts-container .cardpost[data-owner=others]").hide();
+    })
+    /* Aqui se ejecuta crear un nuevo post */
+    $("body").on("click",".new_post",function(e){
+        e.preventDefault();
+        $("body #post-form").modal({show:true,backdrop:'static'});
+    })
+    /* Aqui se ejecuta cuando se le da a guardar al formulario */
+    $("body").on("submit","#new-post-form",function(e){
+        e.preventDefault();
+        savepost();
+    })
 })
+function savepost(){
+    var title = $.trim($("#title").val());
+    var tags = $.trim($("#tags").val());
+    var text = $.trim($("#text").val());
+    if(title != '' && text != ''){
+        var data = {
+            title:title,
+            body:text,
+            tags:tags.split(',').map(Function.prototype.call, String.prototype.trim)
+        };
+        if(localStorage.getItem("blogapi")){
+            var userdata = JSON.parse(localStorage.getItem("blogapi"));
+            var url = 'http://68.183.27.173:8080/post';
+            if(userdata.id > 0 && userdata.token.length == 36){
+                var cabecera = new Headers();
+                cabecera.append("Authorization",'Bearer '+ userdata.token);                    
+                cabecera.append('Content-Type', 'application/json');
+                var init = {
+                    method:'POST',
+                    headers:cabecera,
+                    body:JSON.stringify(data)
+                };
+                var myrequest = new Request(url,init);
+                fetch(myrequest).then(function(response){
+                    if(response.ok){
+                        return response.json();
+                    }
+                    throw new Error('La respuesta no es ok...');
+                }).then(function(data){
+                    if(data.id > 0){
+                        getposts();      
+                        alertshow("Post publicado...","success");
+                        $("#new-post-form")[0].reset();
+                    }else{                                
+                        alertshow("Problemas al publicar comentario...","warning");
+                    }
+                }).catch(function(error){
+                    alertshow("Hubo problema con la peticion fetch"+error.message,"danger");
+                });
+            }else{
+                localStorage.removeItem("blogapi");
+                window.location.href = 'login.html';
+            }
+        }
+    }else{
+        alertshow("Campos requeridos no completado");
+    }
+}
+function filtrarpost(search){
+    $.each($("#posts-container .cardpost"),function(index,value){
+        if(String($(this).data("keys")).toLowerCase().search(search.toLowerCase()) >= 0 || String($(this).data("title")).toLowerCase().search(search.toLowerCase()) >= 0 || String($(this).data("body")).toLowerCase().search(search.toLowerCase()) >= 0){
+            $(this).show();
+        }else{
+            $(this).hide();
+        }
+    })
+}
 function loadcomments(postId,commentcontent){
     if(localStorage.getItem("blogapi")){
         var userdata = JSON.parse(localStorage.getItem("blogapi"));
@@ -259,6 +337,51 @@ function dislike(postId,postcontent){
         }
     }
 }
+function putPost(data,userdata){
+    posts = `<div class="card cardpost mb-2" style="width: 100%; display:none;" data-keys="${JSON.stringify(data.tags)}" data-title="${data.title}" data-body="${data.body}" data-owner="${(userdata.id == data.userId)?'mine':'others'}">
+        <div class="card-body posts py-4">
+                <h5 class="card-title text-truncate"><a class="post-title-a" href="javascript:void(0)"><b class="post-title">${data.title}</b> <i class="fas fa-share-square ml-2"></i></a></h5>
+                <div class="like py-0">
+                    <a class="btn btn-link text-info py-0 my-0 btn-likepost" href="javascript:void(0);" data-postid="${data.id}">${(data.liked)?'<i class="fas fa-star fa-lg"></i>':'<i class="far fa-star fa-lg"></i>'}</a> 
+                    <p><span class="badge badge-pill badge-info count-like">${data.likes}</span> Like</p>
+                </div> 
+                <hr class="mb-0 mt-1">
+                <div class="text-line-3 post-dimiss mb-2">
+                    <p class="card-text text-justify post-body">
+                        ${data.body}
+                    </p>
+                </div>
+                <div class="post-comment py-2">
+                    <hr class="my-1">
+                    <div class="comment-form  text-right">
+                        <div class="form-group mb-1">
+                            <textarea class="form-control text-comment" placeholder="Comentar aqui..." rows="3"></textarea>
+                        </div>
+                        <button class="btn btn-success btn-sm btn-send" data-postid="${data.id}"><i class="fa fa-paper-plane fa-lg"></i> Comentar</button>
+                        <p class="w-100 text-left m-0"><b>comentarios</b></p>
+                        <div class="comment-content">
+                            <!-- Aqui van los comentarios cargados  -->
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-1">
+                <blockquote class="blockquote-title my-0 text-truncate">                                        
+                    <a class="btn btn-link text-info float-right readmore" href="javascript:void(0);" data-postid="${data.id}"><i class="far fa-eye"></i> Leer más...</a>
+                    <a class="btn btn-link text-info float-right readless" style="display:none;" href="javascript:void(0);" data-postid="${data.id}"><i class="far fa-eye-slash"></i> Leer menos...</a>  
+                    <a class="btn btn-link text-info float-right views" href="javascript:void(0);" data-postid="${data.id}"><span class="badge badge-pill badge-dark count-views">${data.views}</span> Vistas</a> 
+                    <blockquote class="blockquote-footer">
+                        <a class="text-success mb-2 showprofile" href="javascript:void(0);" data-ownerid="${data.userId}">
+                            <i class="fa fa-user"></i> 
+                            <b>By:</b> 
+                            <b class="post-owner">${data.userName} (${data.userEmail})</b>
+                        </a> 
+                        <em class="postdate">${new Date(data.createdAt).toLocaleString()}</em>
+                    </blockquote>
+                </blockquote>  
+            </div>
+        </div>`; 
+    $("#posts-container").appbefore($(posts).slideDown("fast"));
+}
 function getposts(){
     if(localStorage.getItem("blogapi")){
         var userdata = JSON.parse(localStorage.getItem("blogapi"));
@@ -281,7 +404,7 @@ function getposts(){
                 $("#posts-container").html("");
                 posts = ``;
                 for(var i=0; i<data.length; i++){
-                    posts += `<div class="card mb-2" style="width: 100%; display:none;">
+                    posts += `<div class="card cardpost mb-2" style="width: 100%; display:none;" data-keys="${JSON.stringify(data[i].tags)}" data-title="${data[i].title}" data-body="${data[i].body}" data-owner="${(userdata.id == data[i].userId)?'mine':'others'}">
                         <div class="card-body posts py-4">
                                 <h5 class="card-title text-truncate"><a class="post-title-a" href="javascript:void(0)"><b class="post-title">${data[i].title}</b> <i class="fas fa-share-square ml-2"></i></a></h5>
                                 <div class="like py-0">

@@ -43,19 +43,18 @@ body{
     font-size: 20px;
 }
 /* Css para los campos requeridos */
-#tabs-login input{
-   border-left: 2px solid rgb(128, 128, 128,0.3); 
+input,textarea{
+   border-left: 2px solid rgba(128, 128, 128, 0.8) !important; 
 }
-#tabs-login input:required{
-    border-left: 2px solid rgba(255,0,0,0.5);
+input:required,textarea:required{
+    border-left: 2px solid rgba(255,0,0,0.5) !important;
 }
-#tabs-login input:required:valid{
-    border-left: 2px solid #4BB543; 
+input:required:valid,textarea:required:valid{
+    border-left: 2px solid #4BB543 !important; 
 }
-#tabs-login input:required:invalid{
-    border-left: 2px solid rgba(255,0,0,0.5); 
+input:required:invalid,textarea:required:invalid{
+    border-left: 2px solid rgba(255,0,0,0.5) !important; 
 }
-
 .content-center{
     margin:0 auto;  
 }
@@ -153,7 +152,7 @@ body{
 #user-profile .modal-body{
     position: relative;
 }
-#user-profile .close{
+#user-profile .close,#post-form .close{
     top:-15px;
     right: -15px;
     border:1px solid rgba(0,0,0,.4);
@@ -168,7 +167,11 @@ body{
     color:white;
     position: absolute;
 }
-#user-profile .close:hover{
+#post-form .close{
+    top:0px;
+    right: 0px;
+}
+#user-profile .close:hover,#post-form .close:hover{
     background-color: rgba(255, 0, 0,1);
 }
 .txt-search{

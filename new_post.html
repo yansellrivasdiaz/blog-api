@@ -1,0 +1,29 @@
+<div class="modal" id="post-form" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white"><i class="fas fa-pen-square fa-lg"></i> Nueva Publicación</h5>
+                <button type="button" class="close p-0" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="new-post-form">
+                    <div class="form-group">
+                        <label for="title">Título</label>
+                        <input type="text" class="form-control" id="title" aria-describedby="title" placeholder="Digite el título" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tags">Etiquetas</label>
+                        <input type="text" class="form-control" id="tags" aria-describedby="tags" placeholder="tags 1, tags 2, tags 3....">
+                    </div>
+                    <div class="form-group">
+                        <label for="text">Contenido</label>
+                        <textarea id="text" rows="3" class="form-control" placeholder="Digite su contenido" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm float-right"><i class="fa fa-share-square fa-lg"></i> Publicar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
