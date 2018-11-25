@@ -14,7 +14,10 @@
     background-size: 5px 5px;
 }
 body{
-    background-color: rgba(211,211,211,.7);
+    background-color: rgba(211,211,211,.5);
+    background-image: url('/assets/image/coverBG.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 .container-fluid{
     height: 100vh;
@@ -181,7 +184,7 @@ input:required:invalid,textarea:required:invalid{
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1030;
+    z-index: 1;
 }
 #posts-menu{
     top: 33px;
