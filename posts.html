@@ -12,19 +12,21 @@
 		<script type="text/javascript" src="assets/js/jquery.js"></script>    
 		<script type="text/javascript" src="assets/js/bootstrap.js"></script>    
 		<script src="app/home.js"></script> 
-		<script src="app/post.js"></script>     
+		<script src="app/posts.js"></script>     
         <script src="assets/js/functions.js"></script>   
 	</head>  
-	<body onload="$('#menu').load('menu_home.html'); $('#page-footer').load('footer.html');$('body #profile-container').load('profile.html');"> 
+	<body onload="$('#menu').load('menu_home.html'); $('#page-footer').load('footer.html');$('body #profile-container').load('profile.html');;$('body #posts-menu').load('menu-vertical.html');"> 
 		<div class="container-fluid" id="content">
 			<div class="row">
 				<div class="col-12" id="menu">
                     <!-- Aqui se carga el menu -->
 				</div>
 			</div>
-			<div class="row pt-3">
-				<div class="col-md-10 col-lg-10 col-sm-10 col-xs-12 offset-md-1 offset-lg-1 offset-sm-1 mb-5 pb-2">
-                    <div class="mt-5" id="comment-container">
+			<div class="row pt-3 px-0">
+				<div class="mt-4  px-0 fixed-left" id="posts-menu">
+				</div>
+				<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 mb-5 pb-2">
+                    <div class="mt-5" id="posts-container">
 
 
                             <!-- Aqui van cargados los comentarios -->
@@ -40,6 +42,5 @@
 			</div>
 			<div id="profile-container"></div>
 		</div> 
-
 	</body>  
 </html>

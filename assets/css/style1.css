@@ -1,14 +1,20 @@
 .texture1{
-    background:
-    radial-gradient(black 15%, transparent 16%) 0 0,
-    radial-gradient(black 15%, transparent 16%) 8px 8px,
-    radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
-    radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
-    background-color:rgba(0,0,0,.4);
-    background-size:16px 16px;
+    margin: 0 auto;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0 0 25px 0 rgba(255, 255, 255, 0.5);
+    background: rgba(0,0,0,.03);
+    background: -moz-radial-gradient(center, ellipse cover,  #3333335b 0%, #33333359 50%, #00000041 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#333333), color-stop(50%,#333333), color-stop(100%,#000000));
+    background: -webkit-radial-gradient(center, ellipse cover,  #333333 0%,#333333 50%,#000000 100%);
+    background: -o-radial-gradient(center, ellipse cover,  #333333 0%,#333333 50%,#000000 100%);
+    background: -ms-radial-gradient(center, ellipse cover,  #333333 0%,#333333 50%,#000000 100%);
+    background: radial-gradient(ellipse at center,  #333333 0%,#333333 50%,#000000 100%);
+    background-size: 5px 5px;
 }
 body{
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(211,211,211,.7);
 }
 .container-fluid{
     height: 100vh;
@@ -64,6 +70,9 @@ body{
     .nav-item-right{
         position: absolute;
         right: 10px;
+    }    
+    .nav-search{
+        width: 20rem;
     }
 }
 @media(min-height: 640px){
@@ -80,8 +89,11 @@ body{
     } 
 }
 @media(max-width: 801px){
-    .readmore,.views{
+    .readmore,.views,.readless{
         margin-top: 15px !important;
+    }
+    .nav-search{
+        width: 100%;
     }
 }
 /* POSTS */
@@ -158,4 +170,111 @@ body{
 }
 #user-profile .close:hover{
     background-color: rgba(255, 0, 0,1);
+}
+.txt-search{
+    background-color:rgba(211,211,211,.5);
+}
+.fixed-left {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1030;
+}
+#posts-menu{
+    top: 33px;
+}
+.menu-vertical{
+    width: 3.6rem;
+    padding: 0;
+    margin: 0;
+    font-size:1rem;
+    height: calc(100vh - 48px) ;
+    background-color: #FFFFFF; 
+    transition: 0.5s all;
+}
+.menu-vertical .menu-item{
+    display: inline-flex;
+    color:rgba(211,211,211,1);
+    margin-top: 1px;
+    margin-bottom: 1px;
+    padding: 0;
+    width: 100%;
+}
+.menu-vertical .menu-item a{
+    width: 100%;
+    padding: 5px 15px;
+}
+.menu-vertical .menu-item a{
+    text-decoration: none; 
+}
+.menu-vertical .menu-item .item-title{
+    display: none;
+    color:rgba(0,0,0,.5);
+}
+#posts-container{
+    padding-left:3rem; 
+}
+.menu-vertical .menu-item a:hover{
+    cursor: pointer;
+    background-color: rgba(211,211,211,1);    
+    transition: 0.5s ease;
+}
+.menu-vertical:hover{
+    width: 15rem;
+    box-shadow: 0 1px 10px rgba(0,0,0,.5);    
+    transition: 0.5s ease;
+}
+.menu-vertical:hover .item-title{
+    transition-delay: 1.5s; 
+    transition: 0.5s ease;
+    display: inline-flex;   
+}
+.btn-openmenu{
+    display: none;
+    padding:30px 2px;
+    position: fixed;
+    top:40%;
+    left: 0;
+    z-index: 1030;
+    background-color: blue;
+}
+@media(max-width:600px){
+    #posts-menu{
+        left: -100%;
+    }
+    #posts-container{
+        padding-left:0; 
+    }
+    .btn-openmenu{
+        display: flex;
+    }    
+    #posts-menu.open{
+        left: 0;
+    }
+    #posts-menu.open .menu-vertical{   
+        padding-top: 35px !important; 
+    }
+    #posts-menu.open .menu-vertical{       
+        width: 15rem;
+        box-shadow: 0 0 10px rgba(0,0,0,.5);    
+        transition: 1s ease;
+    }
+    #posts-menu.open .item-title{
+        display: inline-flex !important; 
+        transition: 1s ease;
+    }
+    #posts-menu.open .btn-openmenu{
+        left: 12.6rem; 
+        top: 60px;
+        padding: 0;
+        padding-left: 6px;
+        height: 35px !important;
+        width: 35px !important;
+        background: none !important;
+        *box-shadow: none;
+        border:3px solid rgba(0,0,0,.5);
+        color:black;
+        font-size: 18px;
+        border-radius: 50%;
+    }
 }
