@@ -35,11 +35,11 @@ function login(){
                     "token":response.token
                 };
                 localStorageSaver(JSON.stringify(UserData));
-                $("#form-login")[0].reset();
                 session("Iniciando session como: "+UserData.name);
                 setTimeout(function(){
+                    $("#form-login")[0].reset();
                     window.location.href = "home.html";
-                },2000);
+                },1500);
             }
         })
         .catch(error => alertshow('Error: '+error.message,'danger'));
