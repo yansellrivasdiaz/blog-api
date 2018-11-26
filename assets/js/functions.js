@@ -1,3 +1,9 @@
+const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+"Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre"
+];
+const monthShortNames = ["Ene", "Feb", "Mar", "Abr", "May", "Jun",
+"Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
+];
 $(document).ready(function(){
     $(".content-center .nav-item").click(function(){
         $("#form-registrarse")[0].reset();
@@ -9,6 +15,14 @@ $(document).ready(function(){
         getuserprofile(userid);
     })
 });
+function dateFormatMonthNames(d) {
+  var t = new Date(d);
+  return t.getDate() + ' ' + monthNames[t.getMonth()] + ', ' + t.getFullYear();
+}
+function dateFormatmonthShortNames(d) {
+  var t = new Date(d);
+  return t.getDate() + ' ' + monthShortNames[t.getMonth()] + ', ' + t.getFullYear();
+}
 function getuserprofile(userid){
     if(localStorage.getItem("blogapi")){
         var userdata = JSON.parse(localStorage.getItem("blogapi"));

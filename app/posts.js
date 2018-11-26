@@ -219,7 +219,7 @@ function loadcomments(postId,commentcontent){
                                     <a class="showprofile" href="javascript:void(0);" data-ownerid="${data[i].userId}" href="javacript:void(0)"> 
                                         <b class="post-owner">${udata.name} (${udata.email})</b>
                                     </a>
-                                    <em class="commentdate">${new Date(data[i].createdAt).toLocaleString()}</em>
+                                    <em class="commentdate">${dateFormatmonthShortNames(new Date(data[i].createdAt))}</em>
                                 </div>
                                 ${data[i].body} 
                             </div>
@@ -363,7 +363,7 @@ function putNewPost(postid){
                     posts = ``;
                     posts = `<div class="card cardpost mb-2" style="width: 100%; display:none;" data-keys="${JSON.stringify(data.tags)}" data-title="${data.title}" data-body="${data.body}" data-owner="${(userdata.id == data.userId)?'mine':'others'}">
                     <div class="card-body posts py-4">
-                            <h5 class="card-title text-truncate"><a class="post-title-a" href="javascript:void(0)"><b class="post-title">${data.title}</b> <i class="fas fa-share-square ml-2"></i></a><small class="text-tags text-truncate float-right"><em>${String(data.tags).replace(/,/gi,', ')}</em></small></h5>
+                            <h5 class="card-title text-truncate"><a class="post-title-a" href="javascript:void(0)"><b class="post-title">${data.title}</b> <i class="fas fa-external-link-alt ml-2"></i></a><small class="text-tags text-truncate float-right"><em>${String(data.tags).replace(/,/gi,', ')}</em></small></h5>
                             <div class="like py-0">
                                 <a class="btn btn-link text-info py-0 my-0 btn-likepost" href="javascript:void(0);" data-postid="${data.id}">${(data.liked)?'<i class="fas fa-star fa-lg"></i>':'<i class="far fa-star fa-lg"></i>'}</a> 
                                 <p><span class="badge badge-pill badge-info count-like">${data.likes}</span> Like</p>
@@ -395,7 +395,7 @@ function putNewPost(postid){
                                     <b>By:</b> 
                                     <b class="post-owner">${data.userName} (${data.userEmail})</b>
                                     </a> 
-                                    <em class="postdate">${new Date(data.createdAt).toLocaleString()}</em>
+                                    <em class="postdate">${dateFormatMonthNames(new Date(data.createdAt))}</em>
                                 </blockquote>
                             </blockquote>  
                             <a class="btn btn-link text-info float-left views" href="javascript:void(0);" data-postid="${data.id}"><span class="badge badge-pill badge-dark count-views">${data.views}</span> Vistas</a> 
@@ -440,7 +440,7 @@ function getposts(){
                 for(var i=0; i<data.length; i++){
                     posts = `<div class="card cardpost mb-2" style="width: 100%; display:none;" data-keys="${JSON.stringify(data[i].tags)}" data-title="${data[i].title}" data-body="${data[i].body}" data-owner="${(userdata.id == data[i].userId)?'mine':'others'}">
                         <div class="card-body posts py-4">
-                                <h5 class="card-title text-truncate"><a class="post-title-a" href="javascript:void(0)"><b class="post-title">${data[i].title}</b> <i class="fas fa-share-square ml-2"></i></a><small class="text-tags text-truncate float-right"><em>${String(data[i].tags).replace(/,/gi,', ')}</em></small></h5>
+                                <h5 class="card-title text-truncate"><a class="post-title-a" href="javascript:void(0)"><b class="post-title">${data[i].title}</b> <i class="fas fa-external-link-alt ml-2"></i></a><small class="text-tags text-truncate float-right"><em>${String(data[i].tags).replace(/,/gi,', ')}</em></small></h5>
                                 <div class="like py-0">
                                     <a class="btn btn-link text-info py-0 my-0 btn-likepost" href="javascript:void(0);" data-postid="${data[i].id}">${(data[i].liked)?'<i class="fas fa-star fa-lg"></i>':'<i class="far fa-star fa-lg"></i>'}</a> 
                                     <p><span class="badge badge-pill badge-info count-like">${data[i].likes}</span> Like</p>
@@ -472,7 +472,7 @@ function getposts(){
                                         <b>By:</b> 
                                         <b class="post-owner">${data[i].userName} (${data[i].userEmail})</b>
                                         </a> 
-                                        <em class="postdate">${new Date(data[i].createdAt).toLocaleString()}</em>
+                                        <em class="postdate">${dateFormatMonthNames(new Date(data[i].createdAt))}</em>
                                     </blockquote>
                                 </blockquote>  
                                 <a class="btn btn-link text-info float-left views" href="javascript:void(0);" data-postid="${data[i].id}"><span class="badge badge-pill badge-dark count-views">${data[i].views}</span> Vistas</a> 
