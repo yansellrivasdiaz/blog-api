@@ -55,7 +55,8 @@ $(document).ready(function(){
         if(postid > 0){
             var textarea = $(this).siblings(".form-group").find(".text-comment");
             var comment = $.trim(textarea.val());
-            if(comment != ''){
+            if(comment != ''){                
+                textarea.removeClass("is_invalid");   
                 var data = {'body':comment};
                 if(localStorage.getItem("blogapi")){
                     var userdata = JSON.parse(localStorage.getItem("blogapi"));
@@ -91,7 +92,8 @@ $(document).ready(function(){
                         window.location.href = 'login.html';
                     }
                 }
-            }else{                
+            }else{    
+                textarea.addClass("is_invalid").focus();            
                 alertshow("Campo obligatorio...","danger");
             }
         }else{
@@ -209,9 +211,10 @@ function loadcomments(postId,commentcontent){
             }).then(function(data){
                 if(data.length > 0){
                     comments = ``;
+                    commentcontent.html("");
                     for(let i=0; i < data.length; i++){                        
                         getuserdata(data[i].userId,function(udata){
-                            comments += `<div class="card comments mb-1 comment-item" style="width: 98%;">
+                            comments = `<div class="card comments mb-1 comment-item" style="width: 98%;">
                             <div class="card-body posts py-2">
                                 <div class="card-title blockquote-footer text-truncate">
                                     <i class="fa fa-user"></i> 
@@ -224,7 +227,7 @@ function loadcomments(postId,commentcontent){
                                 ${data[i].body} 
                             </div>
                             </div>`;
-                            commentcontent.html(comments);
+                            commentcontent.prepend(comments);
                         });
                     }
                 }else{

@@ -17,11 +17,11 @@ $(document).ready(function(){
 });
 function dateFormatMonthNames(d) {
   var t = new Date(d);
-  return t.getDate() + ' ' + monthNames[t.getMonth()] + ', ' + t.getFullYear();
+  return t.getDate() + ' de ' + monthNames[t.getMonth()] + ', ' + t.getFullYear();
 }
 function dateFormatmonthShortNames(d) {
   var t = new Date(d);
-  return t.getDate() + ' ' + monthShortNames[t.getMonth()] + ', ' + t.getFullYear();
+  return t.getDate() + ' de ' + monthShortNames[t.getMonth()] + ', ' + t.getFullYear();
 }
 function getuserprofile(userid){
     if(localStorage.getItem("blogapi")){
