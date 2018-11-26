@@ -65,7 +65,29 @@ input:required:invalid,textarea:required:invalid{
 .content-center{
     margin:0 auto;  
 }
-
+.btn-subir{
+    background-color: #4d4f53ab !important;
+    display: none;
+    padding:3px 10px !important;
+    font-size:20px !important;
+    cursor:pointer;
+    position: fixed;
+    bottom:10%;
+    right:-6px;
+    opacity: 0.9;
+    z-index: 1051 !important;
+}
+.btn-subir:hover,.btn-subir:focus{
+    background:#024959;
+}
+.animated.slideOutRight{
+    transform: translateX(100%);
+    transition: 0.5s ease-in-out;
+}
+.animated.slideInRight{
+    transform: translateX(0%);
+    transition: 0.5s ease-in;
+}
 /* Arreglando el tamaño */
 @media(min-width: 1600px){
     .content-center{

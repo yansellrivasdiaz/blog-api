@@ -14,7 +14,27 @@ $(document).ready(function(){
         var userid = $(this).data("ownerid");
         getuserprofile(userid);
     })
+    /* Esta funsion es para cuando el scroll baja aparezca el boton de subir */
+    $(window).scroll(function(){
+		if( $(this).scrollTop() > 0 ){
+			if(!$("#posts-container .btn-subir").length)$("#posts-container").append(`<a href="javascript:void(0);" class="btn btn-link btn-lg btn-subir animated" onclick="upToTop()"><i class="fa fa-arrow-up fa-lg"></i></a>`);
+            $('#posts-container .btn-subir').show().addClass("slideInRight").removeClass("slideOutRight");
+            $(".page-footer").slideUp("slow");
+		} else {
+            if(!$("#posts-container .btn-subir").length)$("#posts-container").append(`<a href="javascript:void(0);" class="btn btn-link btn-lg btn-subir animated" onclick="upToTop()"><i class="fa fa-arrow-up fa-lg"></i></a>`);
+			$('#posts-container .btn-subir').show().addClass("slideOutRight").removeClass("slideInRight");
+            $(".page-footer").slideDown("slow");
+        }
+	});
 });
+/*
+	funcion para subir hacia arriba en la pantalla
+*/
+function upToTop(){
+	$('body, html').animate({
+		scrollTop: '0px'
+	}, 300);
+}
 function dateFormatMonthNames(d) {
   var t = new Date(d);
   return t.getDate() + ' de ' + monthNames[t.getMonth()] + ', ' + t.getFullYear();
