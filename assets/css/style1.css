@@ -91,9 +91,6 @@ input:required:invalid,textarea:required:invalid{
     } 
 }
 @media(max-width: 801px){
-    .readmore,.views,.readless{
-        margin-top: 15px !important;
-    }
     .nav-search{
         width: 100%;
     }
@@ -104,8 +101,8 @@ input:required:invalid,textarea:required:invalid{
 }
 .posts .like{
     position: absolute;
-    top:5px;
-    right:15px;
+    bottom:0;
+    right:5px;
 }
 .posts .like #count-like{
    font-size: 12px;
@@ -195,7 +192,8 @@ input:required:invalid,textarea:required:invalid{
     margin: 0;
     font-size:1rem;
     height: calc(100vh - 48px) ;
-    background-color: #FFFFFF; 
+    background-color: rgba(255, 255, 255, 0.2); 
+    border-right: 2px solid rgba(0,0,0,.1);
     transition: 0.5s all;
 }
 .menu-vertical .menu-item{
@@ -227,6 +225,8 @@ input:required:invalid,textarea:required:invalid{
 }
 .menu-vertical:hover{
     width: 15rem;
+    background-color: rgba(255, 255, 255, 1); 
+    border-right: none;
     box-shadow: 0 1px 10px rgba(0,0,0,.5);    
     transition: 0.5s ease;
 }
@@ -244,6 +244,9 @@ input:required:invalid,textarea:required:invalid{
     z-index: 1030;
     background-color: blue;
 }
+.text-tags{
+    font-weight: bold;
+}
 @media(max-width:600px){
     #posts-menu{
         left: -100%;
@@ -258,7 +261,9 @@ input:required:invalid,textarea:required:invalid{
         left: 0;
     }
     #posts-menu.open .menu-vertical{   
-        padding-top: 35px !important; 
+        padding-top: 35px !important;
+        background-color: rgba(255, 255, 255, 1); 
+        border-right: none; 
     }
     #posts-menu.open .menu-vertical{       
         width: 15rem;
