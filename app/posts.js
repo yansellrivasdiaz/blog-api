@@ -213,22 +213,20 @@ function loadcomments(postId,commentcontent){
                     comments = ``;
                     commentcontent.html("");
                     for(let i=0; i < data.length; i++){                        
-                        getuserdata(data[i].userId,function(udata){
-                            comments = `<div class="card comments mb-1 comment-item" style="width: 98%;">
-                            <div class="card-body posts py-2">
-                                <div class="card-title blockquote-footer text-truncate">
-                                    <i class="fa fa-user"></i> 
-                                    <b>By:</b>
-                                    <a class="showprofile" href="javascript:void(0);" data-ownerid="${data[i].userId}" href="javacript:void(0)"> 
-                                        <b class="post-owner">${udata.name} (${udata.email})</b>
-                                    </a>
-                                    <em class="commentdate">${dateFormatmonthShortNames(new Date(data[i].createdAt))}</em>
-                                </div>
-                                ${data[i].body} 
+                        comments = `<div class="card comments mb-1 comment-item" style="width: 98%;">
+                        <div class="card-body posts py-2">
+                            <div class="card-title blockquote-footer text-truncate">
+                                <i class="fa fa-user"></i> 
+                                <b>By:</b>
+                                <a class="showprofile" href="javascript:void(0);" data-ownerid="${data[i].userId}" href="javacript:void(0)"> 
+                                    <b class="post-owner">${data[i].userName} (${data[i].userEmail})</b>
+                                </a>
+                                <em class="commentdate">${dateFormatmonthShortNames(new Date(data[i].createdAt))}</em>
                             </div>
-                            </div>`;
-                            commentcontent.prepend(comments);
-                        });
+                            ${data[i].body} 
+                        </div>
+                        </div>`;
+                        commentcontent.prepend(comments);
                     }
                 }else{
                     commentcontent.html(`<p class="h6 w-100 text-center py-4 px-2"> No hay comentarios...</p>`);
