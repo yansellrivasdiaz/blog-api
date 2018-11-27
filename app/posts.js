@@ -21,6 +21,7 @@ $(document).ready(function(){
         e.preventDefault();
         var postid = $(this).data("postid");
         if(postid > 0){
+            updatepost(postid,$(this).siblings(".like").find(".btn-likepost"));
             loadcomments(postid,$(this).siblings(".post-comment").find(".comment-content"));
             $(this).siblings(".post-dimiss").removeClass("text-line-3").slideDown("slow");
             $(this).siblings(".post-comment").slideDown("slow");
@@ -154,6 +155,15 @@ $(document).ready(function(){
         getposts();
     })
 })
+function filtrarpost(search){
+    $.each($("#posts-container .cardpost"),function(index,value){
+        if(String($(this).data("keys")).toLowerCase().search(search.toLowerCase()) >= 0 || String($(this).data("title")).toLowerCase().search(search.toLowerCase()) >= 0 || String($(this).data("body")).toLowerCase().search(search.toLowerCase()) >= 0){
+            $(this).show();
+        }else{
+            $(this).hide();
+        }
+    })
+}
 function getpostbyuser(userid){
     if(localStorage.getItem("blogapi")){
         var userdata = JSON.parse(localStorage.getItem("blogapi"));
@@ -280,7 +290,7 @@ function savepost(){
     }
 }
 function loadcomments(postId,commentcontent){
-    if(localStorage.getItem("blogapi")){
+    if(localStorage.getItem("blogapi")){    
         var userdata = JSON.parse(localStorage.getItem("blogapi"));
         var url = 'http://68.183.27.173:8080/post/'+postId+'/comment';
         if(userdata.id > 0 && userdata.token.length == 36){
@@ -347,8 +357,7 @@ function updatepost(postId,postcontent){
                     return response.json();
                 }
                 throw new Error('La respuesta no es ok...');
-            }).then(function(data){   
-                console.log(data);             
+            }).then(function(data){              
                 postcontent.siblings().find(".count-like").html(data.likes);
                 postcontent.parent().siblings().find(".count-views").html(data.views);
             }).catch(function(error){
@@ -489,7 +498,7 @@ function putNewPost(postid){
                                 </blockquote>
                             </blockquote>  
                             <a class="btn btn-link text-info float-left views" href="javascript:void(0);" data-postid="${data.id}"><span class="badge badge-pill badge-dark count-views">${data.views}</span> Vistas</a> 
-                            <a class="btn btn-link text-info float-left comments" href="javascript:void(0);" data-postid="${data[i].id}"><span class="badge badge-pill badge-dark count-views">${data[i].comments}</span> Comentarios</a> 
+                            <a class="btn btn-link text-info float-left comments" href="javascript:void(0);" data-postid="${data[i].id}"><span class="badge badge-pill badge-dark count-comments">${data[i].comments}</span> Comentarios</a> 
                             <a class="btn btn-link text-info float-left readmore" href="javascript:void(0);" data-postid="${data.id}"><i class="far fa-eye"></i> Leer más...</a>
                             <a class="btn btn-link text-info float-left readless" style="display:none;" href="javascript:void(0);" data-postid="${data.id}"><i class="far fa-eye-slash"></i> Leer menos...</a>  
                         </div>
@@ -567,7 +576,7 @@ function getposts(){
                                     </blockquote>
                                 </blockquote>  
                                 <a class="btn btn-link text-info float-left views" href="javascript:void(0);" data-postid="${data[i].id}"><span class="badge badge-pill badge-dark count-views">${data[i].views}</span> Vistas</a> 
-                                <a class="btn btn-link text-info float-left comments" href="javascript:void(0);" data-postid="${data[i].id}"><span class="badge badge-pill badge-dark count-views">${data[i].comments}</span> Comentarios</a> 
+                                <a class="btn btn-link text-info float-left comments" href="javascript:void(0);" data-postid="${data[i].id}"><span class="badge badge-pill badge-dark count-comments">${data[i].comments}</span> Comentarios</a> 
                                 <a class="btn btn-link text-info float-left readmore" href="javascript:void(0);" data-postid="${data[i].id}"><i class="far fa-eye"></i> Leer más...</a>
                                 <a class="btn btn-link text-info float-left readless" style="display:none;" href="javascript:void(0);" data-postid="${data[i].id}"><i class="far fa-eye-slash"></i> Leer menos...</a>  
                             </div>
