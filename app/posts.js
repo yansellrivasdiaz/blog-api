@@ -100,6 +100,15 @@ $(document).ready(function(){
             alertshow("Problema al realizar acción...","danger");
         }
     })
+    /* Cuando se le da click a los comentarios */
+    $("body").on("click",".comments",function(e){
+        e.preventDefault();
+        if($(this).siblings(".card-title").find(".post-title-a").hasClass("open")){
+            $(this).siblings(".readless").click();
+        }else{
+            $(this).siblings(".readmore").click();
+        }
+    })
     /* Cuando se le da click abrir menu en mobiles */
     $("body").on("click",".btn-openmenu",function(e){
         e.preventDefault();
@@ -120,7 +129,8 @@ $(document).ready(function(){
     /* Aqui se ejecuta la busqueda de mis post */
     $("body").on("click",".my_post",function(e){
         e.preventDefault();
-        $("#posts-container .cardpost[data-owner=others]").hide();
+        var userdata = JSON.parse(localStorage.getItem("blogapi"));
+        getpostbyuser(userdata.id);
     })
     /* Aqui se ejecuta crear un nuevo post */
     $("body").on("click",".new_post",function(e){
@@ -132,7 +142,95 @@ $(document).ready(function(){
         e.preventDefault();
         savepost();
     })
+    /* Aqui es cuando se le da click a la cantidad de post */
+    $("body").on("click",".txt-post",function(e){
+        e.preventDefault();
+        var userid = $(this).data("userid");
+        getpostbyuser(userid);
+    })
+    /* Trae todos los post cuando se le da click a todos */
+    $("body").on("click",".nav-all",function(e){
+        e.preventDefault();
+        getposts();
+    })
 })
+function getpostbyuser(userid){
+    if(localStorage.getItem("blogapi")){
+        var userdata = JSON.parse(localStorage.getItem("blogapi"));
+        var url = 'http://68.183.27.173:8080/post?userId='+userid;
+        if(userdata.id > 0 && userdata.token.length == 36){
+            var cabecera = new Headers();
+            cabecera.append("Authorization",'Bearer '+ userdata.token);                    
+            cabecera.append('Content-Type', 'application/json');
+            var init = {
+                method:'GET',
+                headers:cabecera
+            };
+            var myrequest = new Request(url,init);
+            fetch(myrequest).then(function(response){
+                if(response.ok){
+                    return response.json();
+                }
+                throw new Error('La respuesta no es ok...');
+            }).then(function(data){
+                $("#posts-container").html("");
+                posts = ``;
+                for(var i=0; i<data.length; i++){
+                    posts = `<div class="card cardpost mb-2" style="width: 100%; display:none;" data-keys="${JSON.stringify(data[i].tags)}" data-title="${data[i].title}" data-body="${data[i].body}" data-owner="${(userdata.id == data[i].userId)?'mine':'others'}">
+                        <div class="card-body posts py-4">
+                                <h5 class="card-title text-truncate"><a class="post-title-a" href="javascript:void(0)"><b class="post-title">${data[i].title}</b> <i class="fas fa-external-link-alt ml-2"></i></a><small class="text-tags text-truncate float-right"><em>${String(data[i].tags).replace(/,/gi,', ')}</em></small></h5>
+                                <div class="like py-0">
+                                    <a class="btn btn-link text-info py-0 my-0 btn-likepost" href="javascript:void(0);" data-postid="${data[i].id}">${(data[i].liked)?'<i class="fas fa-star fa-lg"></i>':'<i class="far fa-star fa-lg"></i>'}</a> 
+                                    <p><span class="badge badge-pill badge-info count-like">${data[i].likes}</span> Like</p>
+                                </div> 
+                                <hr class="mb-0 mt-1">
+                                <div class="text-line-3 post-dimiss mb-2">
+                                    <p class="card-text text-justify post-body">
+                                        ${data[i].body}
+                                    </p>
+                                </div>
+                                <div class="post-comment py-2">
+                                    <hr class="my-1">
+                                    <div class="comment-form  text-right">
+                                        <div class="form-group mb-1">
+                                            <textarea class="form-control text-comment" placeholder="Comentar aqui..." rows="3"></textarea>
+                                        </div>
+                                        <button class="btn btn-success btn-sm btn-send" data-postid="${data[i].id}"><i class="fa fa-paper-plane fa-lg"></i> Comentar</button>
+                                        <p class="w-100 text-left m-0"><b>comentarios</b></p>
+                                        <div class="comment-content">
+                                            <!-- Aqui van los comentarios cargados  -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="my-1">
+                                <blockquote class="blockquote-title my-0 py-0 text-truncate">                                        
+                                    <blockquote class="blockquote-footer my-0 text-truncate">
+                                        <a class="text-success my-0 showprofile" href="javascript:void(0);" data-ownerid="${data[i].userId}">
+                                        <i class="fa fa-user"></i> 
+                                        <b>By:</b> 
+                                        <b class="post-owner">${data[i].userName} (${data[i].userEmail})</b>
+                                        </a> 
+                                        <em class="postdate">${dateFormatMonthNames(new Date(data[i].createdAt))}</em>
+                                    </blockquote>
+                                </blockquote>  
+                                <a class="btn btn-link text-info float-left views" href="javascript:void(0);" data-postid="${data[i].id}"><span class="badge badge-pill badge-dark count-views">${data[i].views}</span> Vistas</a> 
+                                <a class="btn btn-link text-info float-left comments" href="javascript:void(0);" data-postid="${data[i].id}"><span class="badge badge-pill badge-dark count-views">${data[i].comments}</span> Comentarios</a> 
+                                <a class="btn btn-link text-info float-left readmore" href="javascript:void(0);" data-postid="${data[i].id}"><i class="far fa-eye"></i> Leer más...</a>
+                                <a class="btn btn-link text-info float-left readless" style="display:none;" href="javascript:void(0);" data-postid="${data[i].id}"><i class="far fa-eye-slash"></i> Leer menos...</a>  
+                            </div>
+                        </div>`; 
+                        $("#posts-container").prepend($(posts).slideDown("fast"));
+                    }
+                    $(".modal").modal("hide");
+            }).catch(function(error){
+                alertshow("Hubo problema con la peticion fetch"+error.message,"danger");
+            });
+        }else{
+            localStorage.removeItem("blogapi");
+            window.location.href = 'login.html';
+        }
+    }
+}
 function savepost(){
     var title = $.trim($("#title").val());
     var tags = $.trim($("#tags").val());
@@ -180,15 +278,6 @@ function savepost(){
     }else{
         alertshow("Campos requeridos no completado");
     }
-}
-function filtrarpost(search){
-    $.each($("#posts-container .cardpost"),function(index,value){
-        if(String($(this).data("keys")).toLowerCase().search(search.toLowerCase()) >= 0 || String($(this).data("title")).toLowerCase().search(search.toLowerCase()) >= 0 || String($(this).data("body")).toLowerCase().search(search.toLowerCase()) >= 0){
-            $(this).show();
-        }else{
-            $(this).hide();
-        }
-    })
 }
 function loadcomments(postId,commentcontent){
     if(localStorage.getItem("blogapi")){
@@ -400,6 +489,7 @@ function putNewPost(postid){
                                 </blockquote>
                             </blockquote>  
                             <a class="btn btn-link text-info float-left views" href="javascript:void(0);" data-postid="${data.id}"><span class="badge badge-pill badge-dark count-views">${data.views}</span> Vistas</a> 
+                            <a class="btn btn-link text-info float-left comments" href="javascript:void(0);" data-postid="${data[i].id}"><span class="badge badge-pill badge-dark count-views">${data[i].comments}</span> Comentarios</a> 
                             <a class="btn btn-link text-info float-left readmore" href="javascript:void(0);" data-postid="${data.id}"><i class="far fa-eye"></i> Leer más...</a>
                             <a class="btn btn-link text-info float-left readless" style="display:none;" href="javascript:void(0);" data-postid="${data.id}"><i class="far fa-eye-slash"></i> Leer menos...</a>  
                         </div>
@@ -477,6 +567,7 @@ function getposts(){
                                     </blockquote>
                                 </blockquote>  
                                 <a class="btn btn-link text-info float-left views" href="javascript:void(0);" data-postid="${data[i].id}"><span class="badge badge-pill badge-dark count-views">${data[i].views}</span> Vistas</a> 
+                                <a class="btn btn-link text-info float-left comments" href="javascript:void(0);" data-postid="${data[i].id}"><span class="badge badge-pill badge-dark count-views">${data[i].comments}</span> Comentarios</a> 
                                 <a class="btn btn-link text-info float-left readmore" href="javascript:void(0);" data-postid="${data[i].id}"><i class="far fa-eye"></i> Leer más...</a>
                                 <a class="btn btn-link text-info float-left readless" style="display:none;" href="javascript:void(0);" data-postid="${data[i].id}"><i class="far fa-eye-slash"></i> Leer menos...</a>  
                             </div>
