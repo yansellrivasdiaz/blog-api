@@ -185,6 +185,7 @@ function getpostbyuser(userid){
             }).then(function(data){
                 $("#posts-container").html("");
                 posts = ``;
+                if(data.length == 0)$("#posts-container").html(`<div class="h3 w-100 text-center text-primary">No tiene post publicado</div>`);
                 for(var i=0; i<data.length; i++){
                     posts = `<div class="card cardpost mb-2" style="width: 100%; display:none;" data-keys="${JSON.stringify(data[i].tags)}" data-title="${data[i].title}" data-body="${data[i].body}" data-owner="${(userdata.id == data[i].userId)?'mine':'others'}">
                         <div class="card-body posts py-4">
@@ -224,7 +225,7 @@ function getpostbyuser(userid){
                                     </blockquote>
                                 </blockquote>  
                                 <a class="btn btn-link text-info float-left views" href="javascript:void(0);" data-postid="${data[i].id}"><span class="badge badge-pill badge-dark count-views">${data[i].views}</span> Vistas</a> 
-                                <a class="btn btn-link text-info float-left comments" href="javascript:void(0);" data-postid="${data[i].id}"><span class="badge badge-pill badge-dark count-views">${data[i].comments}</span> Comentarios</a> 
+                                <a class="btn btn-link text-info float-left comments" href="javascript:void(0);" data-postid="${data[i].id}"><span class="badge badge-pill badge-dark count-comments">${data[i].comments}</span> Comentarios</a> 
                                 <a class="btn btn-link text-info float-left readmore" href="javascript:void(0);" data-postid="${data[i].id}"><i class="far fa-eye"></i> Leer más...</a>
                                 <a class="btn btn-link text-info float-left readless" style="display:none;" href="javascript:void(0);" data-postid="${data[i].id}"><i class="far fa-eye-slash"></i> Leer menos...</a>  
                             </div>
