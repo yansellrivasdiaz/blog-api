@@ -62,10 +62,11 @@ function getuserprofile(userid){
                 }
                 throw new Error('La respuesta no es ok...');
             }).then(function(data){     
+                $("#user-profile .txt-post").data("userid",0);
                 if(data.id > 0){
+                    $("#user-profile .txt-post").html(data.posts).data("userid",userid);
                     $("#user-profile .txt-name").html(data.name);
                     $("#user-profile .txt-email").html(data.email);
-                    $("#user-profile .txt-post").html(data.posts).attr("data-userid",data.id);
                     $("#user-profile .txt-createDate").html((new Date(data.createdAt).toLocaleDateString()));
                     $("#user-profile").modal({show:true,backdrop:'static'});
                 }         
