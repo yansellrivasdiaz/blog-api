@@ -13,6 +13,20 @@
     background: radial-gradient(ellipse at center,  #333333 0%,#333333 50%,#000000 100%);
     background-size: 5px 5px;
 }
+.status:after{
+    content: "";
+    height: 14px;
+    width: 14px;
+    background: rgba(211,211,211,1);
+    position: absolute;
+    border-radius: 50%;
+    box-shadow: 0px 1px 1px black;
+    left: 0px;
+    top:3px;
+}
+.status.active:after{
+    background: #0ce817
+}
 .is_invalid{
     border: 1px solid red;
 }

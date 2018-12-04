@@ -1,6 +1,7 @@
 var posts = ``;
 var comments = ``;
 $(document).ready(function(){
+    
     // aqui se cargan los post una vez la pagina cargue
     getposts();
     // Aqui es donde se lee el like de los post
@@ -21,8 +22,7 @@ $(document).ready(function(){
         e.preventDefault();
         var postid = $(this).data("postid");
         if(postid > 0){
-            updatepost(postid,$(this).siblings(".like").find(".btn-likepost"));
-            loadcomments(postid,$(this).siblings(".post-comment").find(".comment-content"));
+            loadcomments(postid);
             $(this).siblings(".post-dimiss").removeClass("text-line-3").slideDown("slow");
             $(this).siblings(".post-comment").slideDown("slow");
             $(this).hide("fast").siblings(".readless").show("fast");
@@ -80,7 +80,7 @@ $(document).ready(function(){
                         }).then(function(data){
                             if(data.id > 0){
                                 textarea.val("");
-                                loadcomments(postid,commentcontent)       
+                                loadcomments(postid)       
                                 alertshow("Comentario publicado...","success");
                             }else{                                
                                 alertshow("Problemas al publicar comentario...","warning");
@@ -188,17 +188,18 @@ function getpostbyuser(userid){
                 posts = ``;
                 if(data.length == 0)$("#posts-container").html(`<div class="h3 w-100 text-center text-primary">No tiene post publicado</div>`);
                 for(var i=0; i<data.length; i++){
-                    posts = `<div class="card cardpost mb-2" style="width: 100%; display:none;" data-keys="${JSON.stringify(data[i].tags)}" data-title="${data[i].title}" data-body="${data[i].body}" data-owner="${(userdata.id == data[i].userId)?'mine':'others'}">
+                    let{id,body,comments,views, likes,createdAt,userId,userName,userEmail,tags,title,liked}=data[i];
+                    posts = `<div class="card cardpost mb-2" style="width: 100%; display:none;" data-keys='${JSON.stringify(tags)}'>
                     <div class="card-body posts py-4">
-                            <h5 class="card-title text-truncate"><a class="post-title-a" href="javascript:void(0)"><b class="post-title">${data[i].title}</b> <i class="fas fa-external-link-alt ml-2"></i></a><small class="text-tags text-truncate float-right"><em>${getTags(data[i].tags)}</em></small></h5>
+                            <h5 class="card-title text-truncate"><a class="post-title-a" href="javascript:void(0)"><b class="post-title">${title}</b> <i class="fas fa-external-link-alt ml-2"></i></a><small class="text-tags text-truncate float-right"><em>${getTags(tags)}</em></small></h5>
                             <div class="like py-0">
-                                <a class="btn btn-link text-info py-0 my-0 btn-likepost" href="javascript:void(0);" data-postid="${data[i].id}">${(data[i].liked)?'<i class="fas fa-star fa-lg"></i>':'<i class="far fa-star fa-lg"></i>'}</a> 
-                                <p><span class="badge badge-pill badge-info count-like">${data[i].likes}</span> Like</p>
+                                <a class="btn btn-link text-info py-0 my-0 btn-likepost" href="javascript:void(0);" data-postid="${id}">${(liked)?'<i class="fas fa-star fa-lg"></i>':'<i class="far fa-star fa-lg"></i>'}</a> 
+                                <p><span class="badge badge-pill badge-info count-like" id="articulo-like-${id}">${likes}</span> Like</p>
                             </div> 
                             <hr class="mb-0 mt-1">
                             <div class="text-line-3 post-dimiss mb-2">
                                 <p class="card-text text-justify post-body">
-                                    ${data[i].body}
+                                    ${body}
                                 </p>
                             </div>
                             <div class="post-comment py-2">
@@ -207,32 +208,33 @@ function getpostbyuser(userid){
                                     <div class="form-group mb-1">
                                         <textarea class="form-control text-comment" placeholder="Comentar aqui..." rows="3"></textarea>
                                     </div>
-                                    <button class="btn btn-success btn-sm btn-send" data-postid="${data[i].id}"><i class="fa fa-paper-plane fa-lg"></i> Comentar</button>
+                                    <button class="btn btn-success btn-sm btn-send" data-postid="${id}"><i class="fa fa-paper-plane fa-lg"></i> Comentar</button>
                                     <p class="w-100 text-left m-0"><b>comentarios</b></p>
-                                    <div class="comment-content">
+                                    <div class="comment-content" id="articulo-comments-content-${id}">
                                         <!-- Aqui van los comentarios cargados  -->
                                     </div>
                                 </div>
                             </div>
                             <hr class="my-1">
                             <blockquote class="blockquote-title my-0 py-0 text-truncate">                                        
-                                <blockquote class="blockquote-footer my-0 text-truncate">
-                                    <a class="text-success my-0 showprofile" href="javascript:void(0);" data-ownerid="${data[i].userId}">
+                                <blockquote class="blockquote-footer my-0 text-truncate" style="position:relative;">
+                                    <a class="text-success my-0 showprofile" href="javascript:void(0);" data-ownerid="${userId}">
                                     <i class="fa fa-user"></i> 
                                     <b>By:</b> 
-                                    <b class="post-owner">${data[i].userName} (${data[i].userEmail})</b>
+                                    <b class="post-owner">${userName} (${userEmail}) <span class="status userstatus userstatus-${userId}"></span></b>
                                     </a> 
-                                    <em class="postdate">${dateFormatMonthNames(new Date(data[i].createdAt))}</em>
+                                    <em class="postdate">${moment(createdAt).locale((navigator.language || navigator.userLanguage)).calendar()}</em>
                                 </blockquote>
                             </blockquote>  
-                            <a class="btn btn-link text-info float-left views" href="javascript:void(0);" data-postid="${data[i].id}"><span class="badge badge-pill badge-dark count-views">${data[i].views}</span> Vistas</a> 
-                            <a class="btn btn-link text-info float-left comments" href="javascript:void(0);" data-postid="${data[i].id}"><span class="badge badge-pill badge-dark count-comments">${data[i].comments}</span> Comentarios</a> 
-                            <a class="btn btn-link text-info float-left readmore" href="javascript:void(0);" data-postid="${data[i].id}"><i class="far fa-eye"></i> Leer más...</a>
-                            <a class="btn btn-link text-info float-left readless" style="display:none;" href="javascript:void(0);" data-postid="${data[i].id}"><i class="far fa-eye-slash"></i> Leer menos...</a>  
+                            <a class="btn btn-link text-info float-left views" href="javascript:void(0);" data-postid="${id}"><span class="badge badge-pill badge-dark count-views" id="articulo-view-${id}">${views}</span> Vistas</a> 
+                            <a class="btn btn-link text-info float-left comments" href="javascript:void(0);" data-postid="${id}"><span class="badge badge-pill badge-dark count-comments" id="articulo-comment-${id}">${comments}</span> Comentarios</a> 
+                            <a class="btn btn-link text-info float-left readmore" href="javascript:void(0);" data-postid="${id}"><i class="far fa-eye"></i> Leer más...</a>
+                            <a class="btn btn-link text-info float-left readless" style="display:none;" href="javascript:void(0);" data-postid="${id}"><i class="far fa-eye-slash"></i> Leer menos...</a>  
                         </div>
                     </div>`; 
                         $("#posts-container").prepend($(posts).slideDown("fast"));
                     }
+                    getstatus();
                     $(".modal").modal("hide");
             }).catch(function(error){
                 alertshow("Hubo problema con la peticion fetch"+error.message,"danger");
@@ -291,7 +293,7 @@ function savepost(){
         alertshow("Campos requeridos no completado");
     }
 }
-function loadcomments(postId,commentcontent){
+function loadcomments(postId){
     if(localStorage.getItem("blogapi")){    
         var userdata = JSON.parse(localStorage.getItem("blogapi"));
         var url = 'http://68.183.27.173:8080/post/'+postId+'/comment';
@@ -309,28 +311,29 @@ function loadcomments(postId,commentcontent){
                     return response.json();
                 }
                 throw new Error('La respuesta no es ok...');
-            }).then(function(data){
+            }).then(function(data){         
                 if(data.length > 0){
                     comments = ``;
-                    commentcontent.html("");
-                    for(let i=0; i < data.length; i++){                        
+                    $("#articulo-comments-content-"+postId).html("");
+                    data.forEach(comment => {                    
                         comments = `<div class="card comments mb-1 comment-item" style="width: 98%;">
                         <div class="card-body posts py-2">
                             <div class="card-title blockquote-footer text-truncate">
                                 <i class="fa fa-user"></i> 
                                 <b>By:</b>
-                                <a class="showprofile" href="javascript:void(0);" data-ownerid="${data[i].userId}" href="javacript:void(0)"> 
-                                    <b class="post-owner">${data[i].userName} (${data[i].userEmail})</b>
+                                <a class="showprofile" href="javascript:void(0);" data-ownerid="${comment.userId}" href="javacript:void(0)"> 
+                                    <b class="post-owner">${comment.userName} (${comment.userEmail})</b>
                                 </a>
-                                <em class="commentdate">${dateFormatmonthShortNames(new Date(data[i].createdAt))}</em>
+                                <em class="commentdate">${dateFormatmonthShortNames(new Date(comment.createdAt))}</em>
                             </div>
-                            ${data[i].body} 
+                            ${comment.body} 
                         </div>
                         </div>`;
-                        commentcontent.prepend(comments);
-                    }
+                        $("#articulo-comments-content-"+postId).prepend(comments);
+                        
+                    });   
                 }else{
-                    commentcontent.html(`<p class="h6 w-100 text-center py-4 px-2"> No hay comentarios...</p>`);
+                    $("#articulo-comments-content-"+postId).html(`<p class="h6 w-100 text-center py-4 px-2"> No hay comentarios...</p>`);
                 }                
             }).catch(function(error){
                 alertshow("Hubo problema con la peticion fetch"+error.message,"danger");
@@ -341,36 +344,36 @@ function loadcomments(postId,commentcontent){
         }
     }
 }
-function updatepost(postId,postcontent){
-    if(localStorage.getItem("blogapi")){
-        var userdata = JSON.parse(localStorage.getItem("blogapi"));
-        var url = 'http://68.183.27.173:8080/post/'+postId;
-        if(userdata.id > 0 && userdata.token.length == 36){
-            var cabecera = new Headers();
-            cabecera.append("Authorization",'Bearer '+ userdata.token);                    
-            cabecera.append('Content-Type', 'application/json');
-            var init = {
-                method:'GET',
-                headers:cabecera
-            };
-            var myrequest = new Request(url,init);
-            fetch(myrequest).then(function(response){
-                if(response.ok){
-                    return response.json();
-                }
-                throw new Error('La respuesta no es ok...');
-            }).then(function(data){              
-                postcontent.siblings().find(".count-like").html(data.likes);
-                postcontent.parent().siblings().find(".count-views").html(data.views);
-            }).catch(function(error){
-                alertshow("Hubo problema con la peticion fetch"+error.message,"danger");
-            });
-        }else{
-            localStorage.removeItem("blogapi");
-            window.location.href = 'login.html';
-        }
-    }
-}
+// function updatepost(postId,postcontent){
+//     if(localStorage.getItem("blogapi")){
+//         var userdata = JSON.parse(localStorage.getItem("blogapi"));
+//         var url = 'http://68.183.27.173:8080/post/'+postId;
+//         if(userdata.id > 0 && userdata.token.length == 36){
+//             var cabecera = new Headers();
+//             cabecera.append("Authorization",'Bearer '+ userdata.token);                    
+//             cabecera.append('Content-Type', 'application/json');
+//             var init = {
+//                 method:'GET',
+//                 headers:cabecera
+//             };
+//             var myrequest = new Request(url,init);
+//             fetch(myrequest).then(function(response){
+//                 if(response.ok){
+//                     return response.json();
+//                 }
+//                 throw new Error('La respuesta no es ok...');
+//             }).then(function(data){       
+
+//                 postcontent.parent().siblings().find(".count-views").html(data.views);
+//             }).catch(function(error){
+//                 alertshow("Hubo problema con la peticion fetch"+error.message,"danger");
+//             });
+//         }else{
+//             localStorage.removeItem("blogapi");
+//             window.location.href = 'login.html';
+//         }
+//     }
+// }
 function like(postId,postcontent){
     if(localStorage.getItem("blogapi")){
         var userdata = JSON.parse(localStorage.getItem("blogapi"));
@@ -393,7 +396,6 @@ function like(postId,postcontent){
             }).then(function(data){
                 if(data == 200){
                     postcontent.find("i").removeClass("far").addClass("fas");
-                    updatepost(postId,postcontent);
                 }else{
                     alertshow("Error "+data+" al generar like..","warning");
                 }
@@ -428,7 +430,6 @@ function dislike(postId,postcontent){
             }).then(function(data){
                 if(data == 200){
                     postcontent.find("i").removeClass("fas").addClass("far");
-                    updatepost(postId,postcontent);
                 }else{
                     alertshow("Error "+data+" al generar like..","warning");
                 }
@@ -462,17 +463,18 @@ function putNewPost(postid){
             }).then(function(data){
                 if(typeof data.error === 'undefined'){
                     posts = ``;
-                    posts = `<div class="card cardpost mb-2" style="width: 100%; display:none;" data-keys="${JSON.stringify(data.tags)}" data-title="${data.title}" data-body="${data.body}" data-owner="${(userdata.id == data.userId)?'mine':'others'}">
+                    let{id,body,comments,views, likes,createdAt,userId,userName,userEmail,tags,title,liked} = data;
+                    posts = `<div class="card cardpost mb-2" style="width: 100%; display:none;" data-keys='${JSON.stringify(tags)}'>
                     <div class="card-body posts py-4">
-                            <h5 class="card-title text-truncate"><a class="post-title-a" href="javascript:void(0)"><b class="post-title">${data.title}</b> <i class="fas fa-external-link-alt ml-2"></i></a><small class="text-tags text-truncate float-right"><em>${String(data.tags).replace(/,/gi,', ')}</em></small></h5>
+                            <h5 class="card-title text-truncate"><a class="post-title-a" href="javascript:void(0)"><b class="post-title">${title}</b> <i class="fas fa-external-link-alt ml-2"></i></a><small class="text-tags text-truncate float-right"><em>${getTags(tags)}</em></small></h5>
                             <div class="like py-0">
-                                <a class="btn btn-link text-info py-0 my-0 btn-likepost" href="javascript:void(0);" data-postid="${data.id}">${(data.liked)?'<i class="fas fa-star fa-lg"></i>':'<i class="far fa-star fa-lg"></i>'}</a> 
-                                <p><span class="badge badge-pill badge-info count-like">${data.likes}</span> Like</p>
+                                <a class="btn btn-link text-info py-0 my-0 btn-likepost" href="javascript:void(0);" data-postid="${id}">${(liked)?'<i class="fas fa-star fa-lg"></i>':'<i class="far fa-star fa-lg"></i>'}</a> 
+                                <p><span class="badge badge-pill badge-info count-like" id="articulo-like-${id}">${likes}</span> Like</p>
                             </div> 
                             <hr class="mb-0 mt-1">
                             <div class="text-line-3 post-dimiss mb-2">
                                 <p class="card-text text-justify post-body">
-                                    ${data.body}
+                                    ${body}
                                 </p>
                             </div>
                             <div class="post-comment py-2">
@@ -481,28 +483,28 @@ function putNewPost(postid){
                                     <div class="form-group mb-1">
                                         <textarea class="form-control text-comment" placeholder="Comentar aqui..." rows="3"></textarea>
                                     </div>
-                                    <button class="btn btn-success btn-sm btn-send" data-postid="${data.id}"><i class="fa fa-paper-plane fa-lg"></i> Comentar</button>
+                                    <button class="btn btn-success btn-sm btn-send" data-postid="${id}"><i class="fa fa-paper-plane fa-lg"></i> Comentar</button>
                                     <p class="w-100 text-left m-0"><b>comentarios</b></p>
-                                    <div class="comment-content">
+                                    <div class="comment-content" id="articulo-comments-content-${id}">
                                         <!-- Aqui van los comentarios cargados  -->
                                     </div>
                                 </div>
                             </div>
                             <hr class="my-1">
                             <blockquote class="blockquote-title my-0 py-0 text-truncate">                                        
-                                <blockquote class="blockquote-footer my-0 text-truncate">
-                                    <a class="text-success my-0 showprofile" href="javascript:void(0);" data-ownerid="${data.userId}">
+                                <blockquote class="blockquote-footer my-0 text-truncate" style="position:relative;">
+                                    <a class="text-success my-0 showprofile" href="javascript:void(0);" data-ownerid="${userId}">
                                     <i class="fa fa-user"></i> 
                                     <b>By:</b> 
-                                    <b class="post-owner">${data.userName} (${data.userEmail})</b>
+                                    <b class="post-owner">${userName} (${userEmail}) <span class="status userstatus userstatus-${userId}"></span></b>
                                     </a> 
-                                    <em class="postdate">${dateFormatMonthNames(new Date(data.createdAt))}</em>
+                                    <em class="postdate">${moment(createdAt).locale((navigator.language || navigator.userLanguage)).calendar()}</em>
                                 </blockquote>
                             </blockquote>  
-                            <a class="btn btn-link text-info float-left views" href="javascript:void(0);" data-postid="${data.id}"><span class="badge badge-pill badge-dark count-views">${data.views}</span> Vistas</a> 
-                            <a class="btn btn-link text-info float-left comments" href="javascript:void(0);" data-postid="${data[i].id}"><span class="badge badge-pill badge-dark count-comments">${data[i].comments}</span> Comentarios</a> 
-                            <a class="btn btn-link text-info float-left readmore" href="javascript:void(0);" data-postid="${data.id}"><i class="far fa-eye"></i> Leer más...</a>
-                            <a class="btn btn-link text-info float-left readless" style="display:none;" href="javascript:void(0);" data-postid="${data.id}"><i class="far fa-eye-slash"></i> Leer menos...</a>  
+                            <a class="btn btn-link text-info float-left views" href="javascript:void(0);" data-postid="${id}"><span class="badge badge-pill badge-dark count-views" id="articulo-view-${id}">${views}</span> Vistas</a> 
+                            <a class="btn btn-link text-info float-left comments" href="javascript:void(0);" data-postid="${id}"><span class="badge badge-pill badge-dark count-comments" id="articulo-comment-${id}">${comments}</span> Comentarios</a> 
+                            <a class="btn btn-link text-info float-left readmore" href="javascript:void(0);" data-postid="${id}"><i class="far fa-eye"></i> Leer más...</a>
+                            <a class="btn btn-link text-info float-left readless" style="display:none;" href="javascript:void(0);" data-postid="${id}"><i class="far fa-eye-slash"></i> Leer menos...</a>  
                         </div>
                     </div>`; 
                     $("#posts-container").prepend($(posts).slideDown("fast"));
@@ -541,54 +543,58 @@ function getposts(){
                 posts = ``;
                 for(var i=0; i<data.length; i++){
                     let{id,body,comments,views, likes,createdAt,userId,userName,userEmail,tags,title,liked}=data[i];
-                    posts = `<div class="card cardpost mb-2" style="width: 100%; display:none;" data-keys="${JSON.stringify(tags)}" data-title="${title}" data-body="${body}" data-owner="${(userdata.id == userId)?'mine':'others'}">
-                        <div class="card-body posts py-4">
-                                <h5 class="card-title text-truncate"><a class="post-title-a" href="javascript:void(0)"><b class="post-title">${title}</b> <i class="fas fa-external-link-alt ml-2"></i></a><small class="text-tags text-truncate float-right"><em>${getTags(tags)}</em></small></h5>
-                                <div class="like py-0">
-                                    <a class="btn btn-link text-info py-0 my-0 btn-likepost" href="javascript:void(0);" data-postid="${id}">${(liked)?'<i class="fas fa-star fa-lg"></i>':'<i class="far fa-star fa-lg"></i>'}</a> 
-                                    <p><span class="badge badge-pill badge-info count-like">${likes}</span> Like</p>
-                                </div> 
-                                <hr class="mb-0 mt-1">
-                                <div class="text-line-3 post-dimiss mb-2">
-                                    <p class="card-text text-justify post-body">
-                                        ${body}
-                                    </p>
-                                </div>
-                                <div class="post-comment py-2">
-                                    <hr class="my-1">
-                                    <div class="comment-form  text-right">
-                                        <div class="form-group mb-1">
-                                            <textarea class="form-control text-comment" placeholder="Comentar aqui..." rows="3"></textarea>
-                                        </div>
-                                        <button class="btn btn-success btn-sm btn-send" data-postid="${id}"><i class="fa fa-paper-plane fa-lg"></i> Comentar</button>
-                                        <p class="w-100 text-left m-0"><b>comentarios</b></p>
-                                        <div class="comment-content">
-                                            <!-- Aqui van los comentarios cargados  -->
-                                        </div>
+                    posts = `<div class="card cardpost mb-2" style="width: 100%; display:none;" data-keys='${JSON.stringify(tags)}'>
+                    <div class="card-body posts py-4">
+                            <h5 class="card-title text-truncate"><a class="post-title-a" href="javascript:void(0)"><b class="post-title">${title}</b> <i class="fas fa-external-link-alt ml-2"></i></a><small class="text-tags text-truncate float-right"><em>${getTags(tags)}</em></small></h5>
+                            <div class="like py-0">
+                                <a class="btn btn-link text-info py-0 my-0 btn-likepost" href="javascript:void(0);" data-postid="${id}">${(liked)?'<i class="fas fa-star fa-lg"></i>':'<i class="far fa-star fa-lg"></i>'}</a> 
+                                <p><span class="badge badge-pill badge-info count-like" id="articulo-like-${id}">${likes}</span> Like</p>
+                            </div> 
+                            <hr class="mb-0 mt-1">
+                            <div class="text-line-3 post-dimiss mb-2">
+                                <p class="card-text text-justify post-body">
+                                    ${body}
+                                </p>
+                            </div>
+                            <div class="post-comment py-2">
+                                <hr class="my-1">
+                                <div class="comment-form  text-right">
+                                    <div class="form-group mb-1">
+                                        <textarea class="form-control text-comment" placeholder="Comentar aqui..." rows="3"></textarea>
+                                    </div>
+                                    <button class="btn btn-success btn-sm btn-send" data-postid="${id}"><i class="fa fa-paper-plane fa-lg"></i> Comentar</button>
+                                    <p class="w-100 text-left m-0"><b>comentarios</b></p>
+                                    <div class="comment-content" id="articulo-comments-content-${id}">
+                                        <!-- Aqui van los comentarios cargados  -->
                                     </div>
                                 </div>
-                                <hr class="my-1">
-                                <blockquote class="blockquote-title my-0 py-0 text-truncate">                                        
-                                    <blockquote class="blockquote-footer my-0 text-truncate">
-                                        <a class="text-success my-0 showprofile" href="javascript:void(0);" data-ownerid="${userId}">
-                                        <i class="fa fa-user"></i> 
-                                        <b>By:</b> 
-                                        <b class="post-owner">${userName} (${userEmail})</b>
-                                        </a> 
-                                        <em class="postdate">${moment(createdAt).locale((navigator.language || navigator.userLanguage)).calendar()}</em>
-                                    </blockquote>
-                                </blockquote>  
-                                <a class="btn btn-link text-info float-left views" href="javascript:void(0);" data-postid="${id}"><span class="badge badge-pill badge-dark count-views">${views}</span> Vistas</a> 
-                                <a class="btn btn-link text-info float-left comments" href="javascript:void(0);" data-postid="${id}"><span class="badge badge-pill badge-dark count-comments">${comments}</span> Comentarios</a> 
-                                <a class="btn btn-link text-info float-left readmore" href="javascript:void(0);" data-postid="${id}"><i class="far fa-eye"></i> Leer más...</a>
-                                <a class="btn btn-link text-info float-left readless" style="display:none;" href="javascript:void(0);" data-postid="${id}"><i class="far fa-eye-slash"></i> Leer menos...</a>  
                             </div>
-                        </div>`; 
+                            <hr class="my-1">
+                            <blockquote class="blockquote-title my-0 py-0 text-truncate">                                        
+                                <blockquote class="blockquote-footer my-0 text-truncate" style="position:relative;">
+                                    <a class="text-success my-0 showprofile" href="javascript:void(0);" data-ownerid="${userId}">
+                                    <i class="fa fa-user"></i> 
+                                    <b>By:</b> 
+                                    <b class="post-owner">${userName} (${userEmail}) <span class="status userstatus userstatus-${userId}"></span></b>
+                                    </a> 
+                                    <em class="postdate">${moment(createdAt).locale((navigator.language || navigator.userLanguage)).calendar()}</em>
+                                </blockquote>
+                            </blockquote>  
+                            <a class="btn btn-link text-info float-left views" href="javascript:void(0);" data-postid="${id}"><span class="badge badge-pill badge-dark count-views" id="articulo-view-${id}">${views}</span> Vistas</a> 
+                            <a class="btn btn-link text-info float-left comments" href="javascript:void(0);" data-postid="${id}"><span class="badge badge-pill badge-dark count-comments" id="articulo-comment-${id}">${comments}</span> Comentarios</a> 
+                            <a class="btn btn-link text-info float-left readmore" href="javascript:void(0);" data-postid="${id}"><i class="far fa-eye"></i> Leer más...</a>
+                            <a class="btn btn-link text-info float-left readless" style="display:none;" href="javascript:void(0);" data-postid="${id}"><i class="far fa-eye-slash"></i> Leer menos...</a>  
+                        </div>
+                    </div>`; 
                         $("#posts-container").prepend($(posts).slideDown("fast"));
+                        
                     }
+                    getstatus();
             }).catch(function(error){
                 alertshow("Hubo problema con la peticion fetch"+error.message,"danger");
             });
+
+           
         }else{
             localStorage.removeItem("blogapi");
             window.location.href = 'login.html';
@@ -635,4 +641,13 @@ function getTags(data){
     })
     html = html.slice(0,-2);
     return html;
+}
+function getstatus(){    
+    if(localStorage.getItem("blogapi")){
+        var userdata = JSON.parse(localStorage.getItem("blogapi"));
+        wsConnect(userdata.token);
+    }else{
+        localStorage.removeItem("blogapi");
+        window.location.href = 'login.html';
+    }
 }
