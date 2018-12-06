@@ -234,7 +234,6 @@ function getpostbyuser(userid){
                     </div>`; 
                         $("#posts-container").prepend($(posts).slideDown("fast"));
                     }
-                    getstatus();
                     $(".modal").modal("hide");
             }).catch(function(error){
                 alertshow("Hubo problema con la peticion fetch"+error.message,"danger");
@@ -589,7 +588,6 @@ function getposts(){
                         $("#posts-container").prepend($(posts).slideDown("fast"));
                         
                     }
-                    getstatus();
             }).catch(function(error){
                 alertshow("Hubo problema con la peticion fetch"+error.message,"danger");
             });
@@ -641,13 +639,4 @@ function getTags(data){
     })
     html = html.slice(0,-2);
     return html;
-}
-function getstatus(){    
-    if(localStorage.getItem("blogapi")){
-        var userdata = JSON.parse(localStorage.getItem("blogapi"));
-        wsConnect(userdata.token);
-    }else{
-        localStorage.removeItem("blogapi");
-        window.location.href = 'login.html';
-    }
 }

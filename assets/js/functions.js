@@ -26,6 +26,9 @@ $(document).ready(function () {
             $(".page-footer").slideDown("slow");
         }
     });
+    setTimeout(function(){
+        getstatus();
+    },1000);
 });
 /*
 	funcion para subir hacia arriba en la pantalla
@@ -169,7 +172,7 @@ function wsConnect(token) {
                 loadcomments(data.postId);
                 break;
             case "user-connected":
-                alertconnecteduser(userdata.userEmail+"<br/>Se ha conectado...","success");
+                alertconnecteduser(data.userEmail+"<br/>Se ha conectado...","success");
                 $(".userstatus-" + data.userId).addClass("active").attr("title", "Activo");
                 break;
 
@@ -185,4 +188,13 @@ function wsConnect(token) {
 
         }
     };
+}
+function getstatus(){    
+    if(localStorage.getItem("blogapi")){
+        var userdata = JSON.parse(localStorage.getItem("blogapi"));
+        wsConnect(userdata.token);
+    }else{
+        localStorage.removeItem("blogapi");
+        window.location.href = 'login.html';
+    }
 }
