@@ -153,7 +153,10 @@ $(document).ready(function(){
     $("body").on("click",".nav-all",function(e){
         e.preventDefault();
         getposts();
-    })
+    })    
+    setTimeout(function(){
+        getstatus();
+    },1000);
 })
 function filtrarpost(search){
     $("body .txt-search").val(search);

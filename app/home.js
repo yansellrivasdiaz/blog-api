@@ -48,4 +48,8 @@ $(document).ready(function(){
             }
         }
     })
+    
+    setTimeout(function(){
+        getstatus();
+    },1000);
 })

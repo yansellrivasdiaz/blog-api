@@ -26,9 +26,6 @@ $(document).ready(function () {
             $(".page-footer").slideDown("slow");
         }
     });
-    setTimeout(function(){
-        getstatus();
-    },1000);
 });
 /*
 	funcion para subir hacia arriba en la pantalla
