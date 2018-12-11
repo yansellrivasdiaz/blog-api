@@ -13,6 +13,39 @@
     background: radial-gradient(ellipse at center,  #333333 0%,#333333 50%,#000000 100%);
     background-size: 5px 5px;
 }
+#users-container a{
+    font-size: 18px;
+    position: fixed;
+    right: 0px;
+    top:50%;
+    z-index: 100;
+    transition: 0.5s ease-out;
+}
+#users-container a.open{
+    right: 19%;    
+    transition: 0.5s ease-in;
+}
+#userbox{
+    position: fixed;
+    top: 55px;
+    right: 0;
+    width: 20%;
+    height: calc(100vh - 30px);
+    background-color: #0249598c;
+    z-index: 10;
+    padding: 5px 5px;
+    transform: translateX(100%);
+    transition: 0.5s ease-out;
+    max-height: calc(100vh - 60px);
+    overflow-y: scroll;
+}
+#userbox.open{    
+    transition: 0.5s ease-in;
+    transform: translateX(0%);
+}
+#userbox .alert{
+    border-right:6px solid #0ce817;
+}
 .status:after{
     content: "";
     height: 14px;

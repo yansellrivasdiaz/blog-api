@@ -5,6 +5,16 @@ const monthShortNames = ["Ene", "Feb", "Mar", "Abr", "May", "Jun",
     "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
 ];
 $(document).ready(function () {    
+    $("body").on("click",".btn-open",function(e){
+        e.preventDefault();
+        if($(this).find(".fas").hasClass("fa-chevron-left")){
+            $(this).find(".fas").removeClass("fa-chevron-left").addClass("fa-chevron-right");
+        }else{
+            $(this).find(".fas").removeClass("fa-chevron-right").addClass("fa-chevron-left");
+        }
+        $("#userbox").toggleClass("open");
+        $(this).toggleClass("open");
+    })
     $(".content-center .nav-item").click(function () {
         $("#form-registrarse")[0].reset();
         $("#form-login")[0].reset();
@@ -171,15 +181,31 @@ function wsConnect(token) {
             case "user-connected":
                 alertconnecteduser(data.userEmail+"<br/>Se ha conectado...","success");
                 $(".userstatus-" + data.userId).addClass("active").attr("title", "Activo");
+                var user = `<div class="alert alert-info my-1 users text-truncate alertuser-${data.userId}"  title="${data.userEmail}" role="alert">
+                                <i class="fas fa-user-circle fa-lg"></i> ${data.userEmail}
+                            </div>`;
+                if($("#container-user .alertuser-"+data.userId).length == 0){
+                    $("body #container-user").prepend(user);
+                }
                 break;
 
             case "logged":
                 $(".userstatus").removeClass("active").attr("title","Desconectado");
+                $("body #container-user").html("");
                 data.users.forEach(userdata => {
                     $(".userstatus-" + userdata.userId).addClass("active").attr("title", "Activo");
+                    var user = `<div class="alert alert-info users my-1 text-truncate alertuser-${userdata.userId}" title="${userdata.userEmail}" role="alert">
+                                <i class="fas fa-user-circle fa-lg"></i> ${userdata.userEmail}
+                            </div>`;
+                    if($("#container-user .alertuser-"+userdata.userId).length == 0){
+                        $("body #container-user").append(user);
+                    }
                 });
                 break;
             case "disconnected":
+                if($("#container-user .alertuser-"+data.userId).length > 0){
+                    $("#container-user .alertuser-" + data.userId).remove();
+                }
                 $(".userstatus-" + data.userId).removeClass("active").attr("title", "Desconectado");
                 break;
 
