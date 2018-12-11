@@ -108,7 +108,7 @@ function alertshow(message, type) {
 }
 function alertconnecteduser(message, type) {
     var alert_icon = `<i class="fas text-${type} fa-user"></i>`;
-    var alert = `<div id="alert-message" style="display:none; position: absolute; bottom:47px; right:0; z-index:2000; width:29em;" class="alert alert-${type} alert-dismissible fade show" role="alert">
+    var alert = `<div id="alert-message" style="display:none; position: fixed; bottom:0px; right:0; z-index:2000; width:29em;" class="alert alert-${type} alert-dismissible fade show" role="alert">
     ${alert_icon} ${message}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
